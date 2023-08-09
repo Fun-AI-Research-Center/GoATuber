@@ -1,0 +1,8 @@
+api_key = "your_api_key_here"
+model = "your_model_here"
+temperature = 0.3
+top_p = 1
+max_tokens = 10000
+stop = "your_stop_here"
+presence_penalty = 0
+frequency_penalty = 0

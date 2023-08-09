@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/app/dict/README.md" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/dict/filter.go" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/app/dict/trie_tree.go" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/config/cfg/dist/dict.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/config/cfg/dist/情感词汇本体.txt" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/listen/bilibili/chat_server.go" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/listen/bilibili/get_room_info.go" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/listen/bilibili/model.go" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/listen/bilibili/monitor.go" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/listen/bilibili/msg.go" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/listen/bilibili/util.go" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/tool/function" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/tool/function/README.md" charset="UTF-8" />
+  </component>
+</project>

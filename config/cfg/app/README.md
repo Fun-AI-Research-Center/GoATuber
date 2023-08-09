@@ -1,0 +1,2 @@
+存放application的配置文件的区域
+例如api-key等
