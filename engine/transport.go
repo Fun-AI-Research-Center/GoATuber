@@ -30,7 +30,7 @@ func (queue *priorityQueueHeap) Len() int {
 
 // Less 优先级比较
 func (queue *priorityQueueHeap) Less(i, j int) bool {
-	return (*queue)[i].priority > (*queue)[j].priority //优先pop出priority值大的
+	return (*queue)[i].Priority > (*queue)[j].Priority //优先pop出priority值大的
 }
 
 // Swap 交换
@@ -102,7 +102,7 @@ func (e *Engine) handleMessageFromFilter(message []byte) {
 
 	//加入优先队列
 	e.PriorityQueue.Mu.Lock()
-	heap.Push(&e.PriorityQueue.Queue, PriorityMessage{MessageType: ms.Type, priority: value, Message: ms.Message, Username: ms.ChatName, UUID: ms.Uid})
+	heap.Push(&e.PriorityQueue.Queue, PriorityMessage{MessageType: ms.Type, Priority: value, Message: ms.Message, Username: ms.ChatName, UUID: ms.Uid})
 	e.PriorityQueue.Mu.Unlock()
 
 	//当监控线程因为空队列阻塞时，发送信号

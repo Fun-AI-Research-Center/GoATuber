@@ -79,7 +79,6 @@ func read(conn *websocket.Conn) {
 		switch string(code) {
 		case "0":
 			e.Ch.StartNext <- struct{}{}
-		case "1":
 		default:
 			err.Error(errors.New("前端返回错误代码："+string(code)), err.Normal)
 		}

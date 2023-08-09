@@ -43,22 +43,26 @@ type emotion struct {
 
 // 信息通道
 type ch struct {
-	ChatToFilter   chan interface{}
-	FilterToLLM    chan []byte
-	LLMProcess     chan struct{}
-	AIFilter       chan struct{}
-	FinishFilter   chan bool
-	LLMToEmotion   chan struct{}
-	EmotionToVoice chan struct{}
-	ToFront        chan struct{}
-	StartNext      chan struct{}
-	WsDone         chan struct{}
+	//主干流程
+	ChatToFilter   chan interface{} //聊天信息传递给过滤器
+	FilterToLLM    chan []byte      //过滤器传递给语言模块
+	LLMProcess     chan struct{}    //语言模块处理
+	AIFilter       chan struct{}    //过滤AI生成信息
+	FinishFilter   chan bool        //过滤器完成
+	LLMToEmotion   chan struct{}    //语言模块传递给情感模块
+	EmotionToVoice chan struct{}    //情感模块传递给语音模块
+	ToFront        chan struct{}    //语音模块传递给前端
+	StartNext      chan struct{}    //开始下一轮
+	WsDone         chan struct{}    //websocket完成
+
+	//speech相关
+	GetSpeech chan []byte //收到来自前端的speech信息
 }
 
 // PriorityMessage 优先队列
 type PriorityMessage struct {
 	MessageType int     //消息类型
-	priority    float32 //优先级
+	Priority    float32 //优先级
 	Message     string  //消息
 	Username    string  //消息发送者名称
 	UUID        string  //消息发送者识别号
@@ -72,6 +76,8 @@ type priorityQueue struct {
 	EmptyLock chan struct{} //队列为空的时候启用，等待一个信号
 	emptyLock sync.Mutex    //并发写安全
 }
+
+const MaxPriority = 1145141919810 //最大优先级
 
 //工具模型
 

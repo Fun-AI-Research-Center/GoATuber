@@ -1,10 +1,9 @@
 package monitor
 
 import (
-	"errors"
+	"log"
 
 	"GoATuber-2.0/engine"
-	"GoATuber-2.0/err"
 	"GoATuber-2.0/listen/bilibili"
 )
 
@@ -14,6 +13,6 @@ func InitMonitor(e *engine.Engine) {
 	if e.Config.Monitor.BiliBili {
 		bilibili.InitBiliBiliListen(e)
 	} else {
-		err.Error(errors.New("未开启任何监听"), err.Fatal)
+		log.Println("注意：没有任何监听程序被开启，无法监听任何直播间内容")
 	}
 }
