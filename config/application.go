@@ -59,6 +59,7 @@ type azureTTS struct {
 		Volume string `mapstructure:"volume"` //音量，填写比默认值高或低的百分比
 	}
 	Authentication string //令牌
+	Url            string //请求地址
 }
 
 // azure stt结构体
