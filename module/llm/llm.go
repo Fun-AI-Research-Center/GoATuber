@@ -36,10 +36,6 @@ func getMessage(e *engine.Engine) {
 
 		//等待下一轮
 		<-e.Ch.StartNext
-
-		//清空消息
-		e.Message.Message = ""
-		e.Message.MessageSlice = nil
 	}
 }
 

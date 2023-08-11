@@ -78,6 +78,12 @@ func read(conn *websocket.Conn) {
 		}
 		switch string(code) {
 		case "0":
+			//清空消息
+			e.Message.Message = ""
+			e.Message.MessageSlice = nil
+			e.Message.Username = ""
+			e.Message.Uuid = ""
+
 			e.Ch.StartNext <- struct{}{}
 		default:
 			err.Error(errors.New("前端返回错误代码："+string(code)), err.Normal)

@@ -52,11 +52,17 @@ func GetVoice(e *engine.Engine, message *engine.MessageSlice) error {
 
 	defer resp.Body.Close()
 
+	//检查响应码
+	if resp.StatusCode != 200 {
+		return errors.New("响应码错误（azure-tts模块）:" + resp.Status)
+	}
+
 	//处理响应
 	bodyBytes, er := io.ReadAll(resp.Body)
 	if er != nil {
 		return errors.New("读取响应错误（azure-tts模块）:" + er.Error())
 	}
+
 	message.Voice = base64.StdEncoding.EncodeToString(bodyBytes)
 	return nil
 }
