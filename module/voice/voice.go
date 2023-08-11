@@ -21,6 +21,7 @@ func InitVoice(e *engine.Engine) {
 	if e.Config.Voice.Azure {
 		e.Voice.VType = base64
 		go azure.GetAuthentication(e)
+		azure.GetTTSUrl(e)
 	}
 }
 

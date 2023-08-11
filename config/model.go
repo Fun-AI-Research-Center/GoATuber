@@ -61,3 +61,8 @@ type application struct {
 	Pinecone pinecone //Pinecone
 	Dict     dict     //字典配置
 }
+
+// 工具包
+type tool struct {
+	Memory memory //记忆相关
+}

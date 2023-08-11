@@ -16,13 +16,13 @@ import (
 func GetVoice(e *engine.Engine, message *engine.MessageSlice) error {
 	config := e.Config.Application.Azure.AzureTTS
 
-	req, _ := http.NewRequest("GET", config.EndPoint, nil)
+	req, _ := http.NewRequest("POST", config.Url, nil)
 
 	//设置请求头
 	req.Header.Add("X-Microsoft-OutputFormat", "riff-24khz-16bit-mono-pcm")
 	req.Header.Add("Content-Type", "application/ssml+xml")
-	req.Header.Add("Host", config.EndPoint)
-	req.Header.Add("Ocp-Apim-Subscription-Key", config.Authentication)
+	req.Header.Add("Host", config.Url)
+	req.Header.Add("Authorization", config.Authentication)
 	req.Header.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit")
 
 	//构造SSML请求体
@@ -52,11 +52,17 @@ func GetVoice(e *engine.Engine, message *engine.MessageSlice) error {
 
 	defer resp.Body.Close()
 
+	//检查响应码
+	if resp.StatusCode != 200 {
+		return errors.New("响应码错误（azure-tts模块）:" + resp.Status)
+	}
+
 	//处理响应
 	bodyBytes, er := io.ReadAll(resp.Body)
 	if er != nil {
 		return errors.New("读取响应错误（azure-tts模块）:" + er.Error())
 	}
+
 	message.Voice = base64.StdEncoding.EncodeToString(bodyBytes)
 	return nil
 }
