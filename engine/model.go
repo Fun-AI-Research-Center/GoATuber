@@ -19,6 +19,8 @@ type Engine struct {
 }
 
 type message struct {
+	Username     string         //用户名
+	Uuid         string         //uuid
 	Message      string         //消息
 	MessageSlice []MessageSlice //切分的消息
 }
@@ -87,9 +89,9 @@ type tool struct {
 
 // 本地函数调用
 type functionCall struct {
-	IsUseFunctionCall bool                             //是否使用本地函数调用
-	FunctionJson      []interface{}                    //函数调用的json
-	Function          map[string]func([]string) string //函数调用的函数
+	IsUseFunctionCall bool                                      //是否使用本地函数调用
+	FunctionJson      []interface{}                             //函数调用的json
+	Function          map[string]func(*Engine, []string) string //函数调用的函数
 	RequestFunction   chan []string
 	ResponseFunction  chan string
 }

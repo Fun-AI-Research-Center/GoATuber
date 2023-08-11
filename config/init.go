@@ -18,6 +18,7 @@ type Config struct {
 	Proxy       proxy
 	Listen      listen
 	Application application
+	Tool        tool
 }
 
 //配置模块
@@ -32,6 +33,7 @@ func initConfig() Config {
 	cfg.initProxyConfig()
 	cfg.initSpeechConfig()
 	cfg.initApplication()
+	cfg.initTool()
 	return cfg
 }
 
@@ -150,4 +152,9 @@ func (config *Config) initApplication() {
 	config.initAzure()
 	config.initXunFei()
 	config.initDict()
+}
+
+// 初始化工具包
+func (config *Config) initTool() {
+	config.initMemoryConfig()
 }

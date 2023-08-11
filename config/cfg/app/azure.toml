@@ -11,6 +11,10 @@
     presence_penalty = 0
     frequency_penalty = 0
 
+    [AzureOpenai.AzureEmbedding]
+      deployment_id = "your_deployment_id"
+      api_version = "2023-05-15"
+
   [AzureTTS]
     api_key = "your_api_key_here"
     end_point = "your_end_point"

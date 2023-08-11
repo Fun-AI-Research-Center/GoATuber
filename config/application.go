@@ -32,6 +32,14 @@ type azureOpenai struct {
 	Stop             string  `mapstructure:"stop"`              //停止标志
 	PresencePenalty  float64 `mapstructure:"presence_penalty"`  //presence_penalty
 	FrequencyPenalty float64 `mapstructure:"frequency_penalty"` //frequency_penalty
+
+	AzureEmbedding azureEmbedding //azure embedding,嵌入服务
+}
+
+// azure embedding azure-openai嵌入服务
+type azureEmbedding struct {
+	DeploymentID string `mapstructure:"deployment_id"` //模型部署的名称
+	ApiVersion   string `mapstructure:"api_version"`   //要用于此操作的 API 版本
 }
 
 // azure tts结构体

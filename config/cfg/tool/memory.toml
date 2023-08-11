@@ -1,0 +1,6 @@
+use_memory=false
+
+use_openai=false
+use_azure=true
+
+use_pinecone=true

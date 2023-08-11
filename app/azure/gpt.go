@@ -13,6 +13,7 @@ import (
 	"GoATuber-2.0/err"
 	"GoATuber-2.0/proxy"
 	"GoATuber-2.0/tool/function"
+	"GoATuber-2.0/tool/memory"
 	jsoniter "github.com/json-iterator/go"
 )
 
@@ -22,6 +23,9 @@ func GetMessage(e *engine.Engine, message engine.PriorityMessage) error {
 }
 
 func generateMessage(e *engine.Engine, message engine.PriorityMessage) error {
+	e.Message.Username = message.Username
+	e.Message.Uuid = message.UUID
+
 	//初始化操作
 	config := e.Config.Application.Azure.AzureOpenai
 	url := config.EndPoint + "openai/deployments/" + config.DeploymentId + "/chat/completions?api-version=" + config.ApiVersion
@@ -96,6 +100,9 @@ func generateMessage(e *engine.Engine, message engine.PriorityMessage) error {
 	shortMemoryMessage = append(shortMemoryMessage, messageAI)
 
 	//TODO:长期记忆
+	if e.Config.Tool.Memory.UseMemory {
+		go memory.StoreMemory(e, message.Message, messageAI.Content, message.Username)
+	}
 
 	//消息进一步处理
 	e.Ch.LLMProcess <- struct{}{}
