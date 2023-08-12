@@ -77,7 +77,7 @@ type priorityQueue struct {
 	Mu        sync.Mutex    //并发写安全
 	IsEmpty   bool          //队列为空的时候，阻塞读取进程，此变量改为true
 	EmptyLock chan struct{} //队列为空的时候启用，等待一个信号
-	emptyLock sync.Mutex    //并发写安全
+	EmptyMu   sync.Mutex    //并发写安全
 }
 
 const MaxPriority = 1145141919810 //最大优先级
