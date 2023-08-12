@@ -129,8 +129,10 @@ type baiDu struct {
 
 // 百度过滤服务结构体
 type baiduFilter struct {
-	APIKey    string `mapstructure:"api_key"`
-	SecretKey string `mapstructure:"secret_key"`
+	APIKey      string `mapstructure:"api_key"`
+	SecretKey   string `mapstructure:"secret_key"`
+	AccessToken string `json:"access_token"`
+	ExpiresIn   int    `json:"expires_in"`
 }
 
 // 初始化百度配置

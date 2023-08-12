@@ -23,6 +23,7 @@ type message struct {
 	Uuid         string         //uuid
 	Message      string         //消息
 	MessageSlice []MessageSlice //切分的消息
+	MessageType  int            //消息类型
 }
 
 type MessageSlice struct {
