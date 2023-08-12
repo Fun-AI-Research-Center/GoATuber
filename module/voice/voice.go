@@ -57,6 +57,8 @@ func handelVoice(e *engine.Engine, message *engine.MessageSlice, wg *sync.WaitGr
 
 	if er != nil {
 		err.Error(er, err.Normal)
+		wg.Add(1)
+		handelVoice(e, message, wg) //要是死循环了我不好说，，，以后再改
 	}
 	wg.Done()
 }

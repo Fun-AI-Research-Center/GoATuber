@@ -4,6 +4,7 @@ import (
 	"container/heap"
 	"errors"
 	"regexp"
+	"strconv"
 
 	"GoATuber-2.0/app/azure"
 	"GoATuber-2.0/app/openai"
@@ -46,8 +47,9 @@ func getMessage(e *engine.Engine) {
 // 处理消息
 // 可以考虑在这里做一个分流，是直接传递给后续的模块，还是先传递给语言模型（就是直接朗读还是生成回应的区别）
 func handelMessage(e *engine.Engine, message engine.PriorityMessage) {
-	e.Message.MessageType = message.MessageType
+	//感谢礼物等
 
+	e.Message.MessageType = getMessageType(message)
 	e.Message.Username = message.Username
 	e.Message.Uuid = message.UUID
 
@@ -73,6 +75,9 @@ func chooseLLMModel(e *engine.Engine, message engine.PriorityMessage) {
 	if er != nil {
 		err.Error(er, err.Normal)
 		e.Ch.StartNext <- struct{}{}
+		if e.Message.MessageType == engine.Speech {
+			e.Ch.SpeechFail <- struct{}{}
+		}
 	}
 }
 
@@ -117,5 +122,18 @@ func splitSentence(e *engine.Engine) {
 	//将消息整理
 	for i, v := range splitMsg {
 		e.Message.MessageSlice = append(e.Message.MessageSlice, engine.MessageSlice{Index: i, Content: v})
+	}
+}
+
+// 获得消息类型
+func getMessageType(message engine.PriorityMessage) int {
+	switch message.MessageType {
+	case engine.NormalChat, engine.SuperChat, engine.GiftChat, engine.Subscription:
+		return engine.Chat
+	case engine.SpeechMessage:
+		return engine.Speech
+	default:
+		err.Error(errors.New("作者疑似有点神志不清了，去提个issue叫一下他。前后端交互message-type："+strconv.Itoa(message.MessageType)), err.Normal)
+		return engine.Chat
 	}
 }
