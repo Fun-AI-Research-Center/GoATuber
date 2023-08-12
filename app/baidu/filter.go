@@ -40,12 +40,12 @@ func FilterByBaidu(e *engine.Engine, message listen.ChatStruct) {
 }
 
 func FilterAIbyBaidu(e *engine.Engine) {
-	config := e.Config.Application.BaiDu.BaiduFilter
-
-	reqUrl := "https://aip.baidubce.com/rest/2.0/solution/v1/text_censor/v2/user_defined?access_token=" + config.AccessToken
-
 	for {
 		<-e.Ch.AIFilter
+		//生成url
+		config := e.Config.Application.BaiDu.BaiduFilter
+		reqUrl := "https://aip.baidubce.com/rest/2.0/solution/v1/text_censor/v2/user_defined?access_token=" + config.AccessToken
+
 		e.Ch.FinishFilter <- filter(reqUrl, e.Message.Message)
 	}
 }
