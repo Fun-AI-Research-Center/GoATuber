@@ -10,6 +10,7 @@ import (
 	"GoATuber-2.0/module/front"
 	"GoATuber-2.0/module/llm"
 	"GoATuber-2.0/module/monitor"
+	"GoATuber-2.0/module/speech"
 	"GoATuber-2.0/module/voice"
 	"GoATuber-2.0/tool"
 )
@@ -28,6 +29,8 @@ func run(e *engine.Engine) {
 	voice.InitVoice(e)           //再初始化语音模块
 	go filter.InitFilter(e)      //再初始化过滤模块
 	go monitor.InitMonitor(e)    //再初始化监听模块
+
+	go speech.InitSpeech(e) //再初始化语音识别模块
 
 	go front.InitAPI(e) //初始化前端对接
 

@@ -18,11 +18,14 @@ func InitLLM(e *engine.Engine) {
 // 从优先队列中获取消息
 func getMessage(e *engine.Engine) {
 	queue := e.PriorityQueue
+
 	for {
+		//如果优先队列已经空了，那么阻塞等待，直到有新的消息进入
 		if len(queue.Queue) == 0 {
 			queue.IsEmpty = true
 			<-queue.EmptyLock
 		}
+
 		//获取消息
 		message := heap.Pop(&queue.Queue).(engine.PriorityMessage)
 
@@ -42,12 +45,15 @@ func getMessage(e *engine.Engine) {
 // 处理消息
 // 可以考虑在这里做一个分流，是直接传递给后续的模块，还是先传递给语言模型（就是直接朗读还是生成回应的区别）
 func handelMessage(e *engine.Engine, message engine.PriorityMessage) {
+	e.Message.MessageType = message.MessageType
+
 	chooseLLMModel(e, message)
 }
 
 func chooseLLMModel(e *engine.Engine, message engine.PriorityMessage) {
 	config := e.Config.LLM
 	var er error
+
 	if config.Openai {
 		//TODO:你说得对，但是我所有的key都过期了
 	} else if config.AzureOpenai {
