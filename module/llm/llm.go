@@ -6,6 +6,7 @@ import (
 	"regexp"
 
 	"GoATuber-2.0/app/azure"
+	"GoATuber-2.0/app/openai"
 	"GoATuber-2.0/engine"
 	"GoATuber-2.0/err"
 )
@@ -47,6 +48,9 @@ func getMessage(e *engine.Engine) {
 func handelMessage(e *engine.Engine, message engine.PriorityMessage) {
 	e.Message.MessageType = message.MessageType
 
+	e.Message.Username = message.Username
+	e.Message.Uuid = message.UUID
+
 	chooseLLMModel(e, message)
 }
 
@@ -55,7 +59,8 @@ func chooseLLMModel(e *engine.Engine, message engine.PriorityMessage) {
 	var er error
 
 	if config.Openai {
-		//TODO:你说得对，但是我所有的key都过期了
+		//TODO:你说得对，但是我所有的key都过期了，所以不保证没有bug
+		er = openai.GetMessage(e, message)
 	} else if config.AzureOpenai {
 		er = azure.GetMessage(e, message)
 	} else if config.Other {
