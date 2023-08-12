@@ -59,7 +59,8 @@ type ch struct {
 	WsDone         chan struct{}    //websocket完成
 
 	//speech相关
-	GetSpeech chan []byte //收到来自前端的speech信息
+	GetSpeech  chan []byte   //收到来自前端的speech信息
+	SpeechFail chan struct{} //语音消息处理失败，通知前端解除阻塞
 }
 
 // PriorityMessage 优先队列
@@ -108,4 +109,9 @@ const (
 	SpeechMessage
 	DirectReadNeedMood
 	DirectReadWithoutMood
+)
+
+const (
+	Chat   = 1
+	Speech = 2
 )

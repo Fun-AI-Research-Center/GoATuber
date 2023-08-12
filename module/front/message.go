@@ -1,16 +1,8 @@
 package front
 
 import (
-	"errors"
-	"strconv"
-
 	"GoATuber-2.0/engine"
-	"GoATuber-2.0/err"
-)
-
-const (
-	chat  = 1
-	voice = 2
+	jsoniter "github.com/json-iterator/go"
 )
 
 type outMessage struct {
@@ -32,7 +24,7 @@ type message struct {
 // 将消息格式化为传送给前端的格式
 func formatMessage() outMessage {
 	var out = outMessage{
-		MessageType: getMessageType(),
+		MessageType: e.Message.MessageType,
 		Sum:         len(e.Message.MessageSlice),
 		Messages:    formatMessageSlice(e.Voice.VType),
 	}
@@ -55,15 +47,13 @@ func formatMessageSlice(vType int) []message {
 	return out
 }
 
-// 获得消息类型
-func getMessageType() int {
-	switch e.Message.MessageType {
-	case engine.NormalChat, engine.SuperChat, engine.GiftChat, engine.Subscription:
-		return chat
-	case engine.SpeechMessage:
-		return voice
-	default:
-		err.Error(errors.New("作者疑似有点神志不清了，去提个issue叫一下他。前后端交互message-type："+strconv.Itoa(e.Message.MessageType)), err.Normal)
-		return chat
+func handelFailSpeechMessage() []byte {
+	var out = outMessage{
+		MessageType: engine.Speech,
+		Sum:         0,
+		Messages:    nil,
 	}
+	var json = jsoniter.ConfigCompatibleWithStandardLibrary
+	outJson, _ := json.Marshal(out)
+	return outJson
 }
