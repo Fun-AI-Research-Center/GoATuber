@@ -79,7 +79,7 @@ func (req *postDataWithFunction) initRequestModel(e *engine.Engine, msg engine.P
 	}
 	shortMemoryMessage = append(shortMemoryMessage, request)
 
-	req.Messages = shortMemoryMessage
+	req.Messages = append(roleMessage, shortMemoryMessage...)
 	req.FrequencyPenalty = config.FrequencyPenalty
 	req.PresencePenalty = config.PresencePenalty
 	req.TopP = config.TopP
@@ -102,7 +102,7 @@ func (req *postDataWithoutFunction) initRequestModel(e *engine.Engine, msg engin
 	}
 	shortMemoryMessage = append(shortMemoryMessage, request)
 
-	req.Messages = shortMemoryMessage
+	req.Messages = append(roleMessage, shortMemoryMessage...)
 	req.FrequencyPenalty = config.FrequencyPenalty
 	req.PresencePenalty = config.PresencePenalty
 	req.TopP = config.TopP

@@ -47,7 +47,7 @@ func speechToText(e *engine.Engine, speechData *bytes.Buffer) {
 	}
 
 	//构造优先队列消息体
-	message := engine.PriorityMessage{
+	message := &engine.PriorityMessage{
 		Priority:    engine.MaxPriority,
 		MessageType: engine.SpeechMessage,
 		Message:     text,
@@ -56,5 +56,5 @@ func speechToText(e *engine.Engine, speechData *bytes.Buffer) {
 	}
 
 	//将消息体放入优先队列
-	heap.Push(&e.PriorityQueue.Queue, &message)
+	heap.Push(&e.PriorityQueue.Queue, message)
 }

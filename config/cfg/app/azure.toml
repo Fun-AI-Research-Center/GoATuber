@@ -11,6 +11,11 @@
     presence_penalty = 0
     frequency_penalty = 0
 
+    [AzureOpenai.MemoryAndClean]
+      short_memory_token_limit=500
+      clean_all=true
+      clean_one=false
+
     [AzureOpenai.AzureEmbedding]
       deployment_id = "your_deployment_id"
       api_version = "2023-05-15"

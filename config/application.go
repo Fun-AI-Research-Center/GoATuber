@@ -33,6 +33,7 @@ type azureOpenai struct {
 	PresencePenalty  float64 `mapstructure:"presence_penalty"`  //presence_penalty
 	FrequencyPenalty float64 `mapstructure:"frequency_penalty"` //frequency_penalty
 
+	MemoryAndClean memoryAndClean //记忆和清理
 	AzureEmbedding azureEmbedding //azure embedding,嵌入服务
 }
 
@@ -154,14 +155,15 @@ func (config *Config) initBaidu() {
 
 // OpenAI结构体
 type openai struct {
-	ApiKey           string  `mapstructure:"api_key"`           //API密钥
-	Model            string  `mapstructure:"model"`             //模型
-	Temperature      float64 `mapstructure:"temperature"`       //温度
-	TopP             float64 `mapstructure:"top_p"`             //top_p
-	MaxTokens        int     `mapstructure:"max_tokens"`        //最大token
-	Stop             string  `mapstructure:"stop"`              //停止标志
-	PresencePenalty  float64 `mapstructure:"presence_penalty"`  //presence_penalty
-	FrequencyPenalty float64 `mapstructure:"frequency_penalty"` //frequency_penalty
+	ApiKey           string         `mapstructure:"api_key"`           //API密钥
+	Model            string         `mapstructure:"model"`             //模型
+	Temperature      float64        `mapstructure:"temperature"`       //温度
+	TopP             float64        `mapstructure:"top_p"`             //top_p
+	MaxTokens        int            `mapstructure:"max_tokens"`        //最大token
+	Stop             string         `mapstructure:"stop"`              //停止标志
+	PresencePenalty  float64        `mapstructure:"presence_penalty"`  //presence_penalty
+	FrequencyPenalty float64        `mapstructure:"frequency_penalty"` //frequency_penalty
+	MemoryAndClean   memoryAndClean //记忆相关
 }
 
 func (config *Config) initOpenai() {
@@ -214,4 +216,15 @@ func (config *Config) initDict() {
 	if e := viper.Unmarshal(&config.Application.Dict); e != nil {
 		err.Error(errors.New("unmarshal dict config fatal:"+e.Error()), err.Fatal)
 	}
+}
+
+// 一些通配
+// 记忆和清理（用于openai和azure openai的gpt服务）
+type memoryAndClean struct {
+	//短期记忆token上限
+	ShortMemoryTokenLimit int `mapstructure:"short_memory_token_limit"` //短期记忆token清理限制
+
+	//清理方式
+	CleanAll bool `mapstructure:"clean_all"` //清理所有记忆
+	CleanOne bool `mapstructure:"clean_one"` //清理一个记忆
 }

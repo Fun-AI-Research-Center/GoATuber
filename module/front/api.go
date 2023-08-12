@@ -33,6 +33,6 @@ func InitAPI(engine *engine.Engine) {
 		}
 	})
 	r.GET("/get", getModelInfo)
-	r.GET("/speech", getSpeech)
+	r.POST("/speech", getSpeech)
 	r.Run(":9000") //服务在本地9000端口运行
 }
