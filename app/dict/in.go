@@ -2,7 +2,6 @@ package dict
 
 import (
 	"errors"
-	"strconv"
 
 	"GoATuber-2.0/engine"
 	"GoATuber-2.0/err"
@@ -14,17 +13,8 @@ import (
 
 //定义类型常量（敏感词过滤or情感分析）
 
-const (
-	FilterMessage = 0
-)
-
-func InDict(e *engine.Engine, ty int, message listen.ChatStruct) {
-	switch ty {
-	case FilterMessage:
-		filterDict(e, message)
-	default:
-		err.Error(errors.New("未知的类型，建议去项目的issue里询问一下维护者是否清醒。记得附上代码："+strconv.Itoa(ty)), err.Normal)
-	}
+func InDict(e *engine.Engine, message listen.ChatStruct) {
+	filterDict(e, message)
 }
 
 func filterDict(e *engine.Engine, ms listen.ChatStruct) {

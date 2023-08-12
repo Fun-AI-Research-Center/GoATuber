@@ -9,16 +9,6 @@ import (
 	"GoATuber-2.0/err"
 )
 
-const (
-	Happy = iota
-	Mad
-	Sad
-	Disgust
-	Surprise
-	Fear
-	Health
-)
-
 type mood struct {
 	Happy    int //开心的
 	Health   int //健全的（皮套人直播术语，，，
