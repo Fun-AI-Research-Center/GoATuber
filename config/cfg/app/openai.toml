@@ -6,3 +6,8 @@ max_tokens = 10000
 stop = "your_stop_here"
 presence_penalty = 0
 frequency_penalty = 0
+
+  [MemoryAndClean]
+    short_memory_token_limit=500
+    clean_all=true
+    clean_one=false

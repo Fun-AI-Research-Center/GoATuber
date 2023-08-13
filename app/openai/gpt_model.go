@@ -1,12 +1,14 @@
-package azure
+package openai
 
 import "GoATuber-2.0/engine"
 
 var shortMemoryMessage = make([]requestMessages, 0) //短期记忆消息
 var (
 	roleMessage = make([]requestMessages, 0) //角色消息
-	isRead      = false                      //是否已经读取过角色信息
+	isRead      = false
 )
+
+const openAIChatUrl = "https://api.openai.com/v1/chat/completions" //OpenAI对话使用的url
 
 //azure openai相关model
 

@@ -4,8 +4,10 @@ import (
 	"container/heap"
 	"errors"
 	"regexp"
+	"strconv"
 
 	"GoATuber-2.0/app/azure"
+	"GoATuber-2.0/app/openai"
 	"GoATuber-2.0/engine"
 	"GoATuber-2.0/err"
 )
@@ -18,11 +20,14 @@ func InitLLM(e *engine.Engine) {
 // 从优先队列中获取消息
 func getMessage(e *engine.Engine) {
 	queue := e.PriorityQueue
+
 	for {
+		//如果优先队列已经空了，那么阻塞等待，直到有新的消息进入
 		if len(queue.Queue) == 0 {
 			queue.IsEmpty = true
 			<-queue.EmptyLock
 		}
+
 		//获取消息
 		message := heap.Pop(&queue.Queue).(engine.PriorityMessage)
 
@@ -42,14 +47,22 @@ func getMessage(e *engine.Engine) {
 // 处理消息
 // 可以考虑在这里做一个分流，是直接传递给后续的模块，还是先传递给语言模型（就是直接朗读还是生成回应的区别）
 func handelMessage(e *engine.Engine, message engine.PriorityMessage) {
+	//感谢礼物等
+
+	e.Message.MessageType = getMessageType(message)
+	e.Message.Username = message.Username
+	e.Message.Uuid = message.UUID
+
 	chooseLLMModel(e, message)
 }
 
 func chooseLLMModel(e *engine.Engine, message engine.PriorityMessage) {
 	config := e.Config.LLM
 	var er error
+
 	if config.Openai {
-		//TODO:你说得对，但是我所有的key都过期了
+		//TODO:你说得对，但是我所有的key都过期了，所以不保证没有bug
+		er = openai.GetMessage(e, message)
 	} else if config.AzureOpenai {
 		er = azure.GetMessage(e, message)
 	} else if config.Other {
@@ -62,6 +75,9 @@ func chooseLLMModel(e *engine.Engine, message engine.PriorityMessage) {
 	if er != nil {
 		err.Error(er, err.Normal)
 		e.Ch.StartNext <- struct{}{}
+		if e.Message.MessageType == engine.Speech {
+			e.Ch.SpeechFail <- struct{}{}
+		}
 	}
 }
 
@@ -106,5 +122,18 @@ func splitSentence(e *engine.Engine) {
 	//将消息整理
 	for i, v := range splitMsg {
 		e.Message.MessageSlice = append(e.Message.MessageSlice, engine.MessageSlice{Index: i, Content: v})
+	}
+}
+
+// 获得消息类型
+func getMessageType(message engine.PriorityMessage) int {
+	switch message.MessageType {
+	case engine.NormalChat, engine.SuperChat, engine.GiftChat, engine.Subscription:
+		return engine.Chat
+	case engine.SpeechMessage:
+		return engine.Speech
+	default:
+		err.Error(errors.New("作者疑似有点神志不清了，去提个issue叫一下他。前后端交互message-type："+strconv.Itoa(message.MessageType)), err.Normal)
+		return engine.Chat
 	}
 }

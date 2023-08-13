@@ -23,6 +23,7 @@ type message struct {
 	Uuid         string         //uuid
 	Message      string         //消息
 	MessageSlice []MessageSlice //切分的消息
+	MessageType  int            //消息类型
 }
 
 type MessageSlice struct {
@@ -58,7 +59,8 @@ type ch struct {
 	WsDone         chan struct{}    //websocket完成
 
 	//speech相关
-	GetSpeech chan []byte //收到来自前端的speech信息
+	GetSpeech  chan []byte   //收到来自前端的speech信息
+	SpeechFail chan struct{} //语音消息处理失败，通知前端解除阻塞
 }
 
 // PriorityMessage 优先队列
@@ -76,7 +78,7 @@ type priorityQueue struct {
 	Mu        sync.Mutex    //并发写安全
 	IsEmpty   bool          //队列为空的时候，阻塞读取进程，此变量改为true
 	EmptyLock chan struct{} //队列为空的时候启用，等待一个信号
-	emptyLock sync.Mutex    //并发写安全
+	EmptyMu   sync.Mutex    //并发写安全
 }
 
 const MaxPriority = 1145141919810 //最大优先级
@@ -107,4 +109,9 @@ const (
 	SpeechMessage
 	DirectReadNeedMood
 	DirectReadWithoutMood
+)
+
+const (
+	Chat   = 1
+	Speech = 2
 )

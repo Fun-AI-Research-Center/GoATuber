@@ -1,25 +1,42 @@
 package front
 
 import (
-	"errors"
+	"io/ioutil"
 
-	"GoATuber-2.0/err"
 	"github.com/gin-gonic/gin"
 )
 
 func getSpeech(c *gin.Context) {
-	speech, er := c.GetRawData()
-
-	if er != nil {
-		err.Error(errors.New("获取speech错误："+er.Error()), err.Normal)
+	speechFile, err := c.FormFile("audioFile")
+	if err != nil {
+		// 处理错误
 		c.JSON(500, gin.H{
-			"info": er.Error(),
+			"info": err.Error(),
 		})
 		return
 	}
 
-	e.Ch.GetSpeech <- speech
+	speech, err := speechFile.Open()
+	if err != nil {
+		// 处理错误
+		c.JSON(500, gin.H{
+			"info": err.Error(),
+		})
+		return
+	}
+	defer speech.Close()
 
+	speechData, err := ioutil.ReadAll(speech)
+	if err != nil {
+		// 处理错误
+		c.JSON(500, gin.H{
+			"info": err.Error(),
+		})
+		return
+	}
+
+	// 将 speechData 发送到通道中
+	e.Ch.GetSpeech <- speechData
 	//成功返回
 	c.JSON(200, gin.H{
 		"info": "ok",

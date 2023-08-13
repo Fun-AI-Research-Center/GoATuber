@@ -107,12 +107,12 @@ func (e *Engine) handleMessageFromFilter(message []byte) {
 
 	//当监控线程因为空队列阻塞时，发送信号
 	if e.PriorityQueue.IsEmpty {
-		if isLock := e.PriorityQueue.emptyLock.TryLock(); !isLock {
+		if isLock := e.PriorityQueue.EmptyMu.TryLock(); !isLock {
 			return
 		}
 		e.PriorityQueue.EmptyLock <- struct{}{}
 		e.PriorityQueue.IsEmpty = false
-		e.PriorityQueue.emptyLock.Unlock()
+		e.PriorityQueue.EmptyMu.Unlock()
 	}
 }
 

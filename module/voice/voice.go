@@ -16,8 +16,15 @@ const (
 	binary = 3
 )
 
+var (
+	errorHandel   = make(chan struct{}, 1)
+	getErrorInfo  = make(chan struct{}, 1)
+	postErrorInfo = make(chan bool, 1)
+)
+
 func InitVoice(e *engine.Engine) {
 	go listenVoice(e)
+	go handelError()
 	if e.Config.Voice.Azure {
 		e.Voice.VType = base64
 		go azure.GetAuthentication(e)
@@ -32,9 +39,18 @@ func listenVoice(e *engine.Engine) {
 			var wg sync.WaitGroup
 			for i, _ := range e.Message.MessageSlice {
 				wg.Add(1)
-				go handelVoice(e, &e.Message.MessageSlice[i], &wg)
+				go handelVoice(e, &e.Message.MessageSlice[i], &wg, 0)
 			}
 			wg.Wait()
+			getErrorInfo <- struct{}{}
+
+			//错误信息处理
+			if <-postErrorInfo {
+				e.Ch.StartNext <- struct{}{}
+				if e.Message.MessageType == engine.Speech {
+					e.Ch.SpeechFail <- struct{}{}
+				}
+			}
 
 			//将消息发送到前端
 			e.Ch.ToFront <- struct{}{}
@@ -42,7 +58,7 @@ func listenVoice(e *engine.Engine) {
 	}
 }
 
-func handelVoice(e *engine.Engine, message *engine.MessageSlice, wg *sync.WaitGroup) {
+func handelVoice(e *engine.Engine, message *engine.MessageSlice, wg *sync.WaitGroup, tryCount int) {
 	config := e.Config.Voice
 	var er error
 	if config.XFyun {
@@ -57,6 +73,29 @@ func handelVoice(e *engine.Engine, message *engine.MessageSlice, wg *sync.WaitGr
 
 	if er != nil {
 		err.Error(er, err.Normal)
+		//进行重试
+		wg.Add(1)
+		tryCount++
+		if tryCount < 3 { //重试三次
+			handelVoice(e, message, wg, tryCount)
+		} else {
+			errorHandel <- struct{}{}
+		}
 	}
+
 	wg.Done()
+}
+
+// 处理错误
+func handelError() {
+	var isErr = false
+	for {
+		select {
+		case <-errorHandel:
+			isErr = true
+		case <-getErrorInfo:
+			postErrorInfo <- isErr
+			isErr = false
+		}
+	}
 }

@@ -55,7 +55,11 @@ func write(conn *websocket.Conn) {
 			if er != nil {
 				continue
 			}
-
+		case <-e.Ch.FilterToLLM:
+			er = conn.WriteMessage(websocket.TextMessage, handelFailSpeechMessage())
+			if er != nil {
+				continue
+			}
 		case <-e.Ch.WsDone:
 			return
 		}
