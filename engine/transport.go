@@ -118,7 +118,25 @@ func (e *Engine) handleMessageFromFilter(message []byte) {
 
 // ExpendToLLM 从扩展模块接受消息，计算权重，放入优先队列
 func (e *Engine) getMessageFromExpend() {
-	//TODO:拓展槽还没做呢。考虑：在LLM模型后面再加一条道。
+	for {
+		select {
+		case message := <-e.Ch.ExpendToQueue:
+			//将message加入优先队列
+			e.PriorityQueue.Mu.Lock()
+			heap.Push(&e.PriorityQueue.Queue, message)
+			e.PriorityQueue.Mu.Unlock()
+
+			//当监控线程因为空队列阻塞时，发送信号
+			if e.PriorityQueue.IsEmpty {
+				if isLock := e.PriorityQueue.EmptyMu.TryLock(); !isLock {
+					return
+				}
+				e.PriorityQueue.EmptyLock <- struct{}{}
+				e.PriorityQueue.IsEmpty = false
+				e.PriorityQueue.EmptyMu.Unlock()
+			}
+		}
+	}
 }
 
 //优先队列维护器

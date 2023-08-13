@@ -47,6 +47,13 @@ func getMessage(e *engine.Engine) {
 // 处理消息
 // 可以考虑在这里做一个分流，是直接传递给后续的模块，还是先传递给语言模型（就是直接朗读还是生成回应的区别）
 func handelMessage(e *engine.Engine, message engine.PriorityMessage) {
+	//分流（是否需要经过llm）
+	switch message.MessageType {
+	case engine.DirectReadNeedMood, engine.DirectReadWithoutMood:
+		handelDiversionMessage(e, message)
+		return
+	}
+
 	//感谢礼物等
 
 	e.Message.MessageType = getMessageType(message)
@@ -121,7 +128,12 @@ func splitSentence(e *engine.Engine) {
 
 	//将消息整理
 	for i, v := range splitMsg {
-		e.Message.MessageSlice = append(e.Message.MessageSlice, engine.MessageSlice{Index: i, Content: v})
+		var message = engine.MessageSlice{
+			Index:   i,
+			Content: v,
+		}
+		message.Emotion.Emo = "health"
+		e.Message.MessageSlice = append(e.Message.MessageSlice, message)
 	}
 }
 
@@ -135,5 +147,19 @@ func getMessageType(message engine.PriorityMessage) int {
 	default:
 		err.Error(errors.New("作者疑似有点神志不清了，去提个issue叫一下他。前后端交互message-type："+strconv.Itoa(message.MessageType)), err.Normal)
 		return engine.Chat
+	}
+}
+
+// 处理分流消息
+func handelDiversionMessage(e *engine.Engine, message engine.PriorityMessage) {
+	e.Message.Message = message.Message
+	splitSentence(e)
+
+	messageType := message.MessageType
+	switch messageType {
+	case engine.DirectReadNeedMood:
+		e.Ch.LLMToEmotion <- struct{}{}
+	case engine.DirectReadWithoutMood:
+		e.Ch.EmotionToVoice <- struct{}{}
 	}
 }

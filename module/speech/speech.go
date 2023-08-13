@@ -56,7 +56,9 @@ func speechToText(e *engine.Engine, speechData *bytes.Buffer) {
 	}
 
 	//将消息体放入优先队列
+	e.PriorityQueue.Mu.Lock()
 	heap.Push(&e.PriorityQueue.Queue, message)
+	e.PriorityQueue.Mu.Unlock()
 
 	//当监控线程因为空队列阻塞时，发送信号
 	if e.PriorityQueue.IsEmpty {
