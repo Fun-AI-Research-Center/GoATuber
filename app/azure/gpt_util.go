@@ -33,7 +33,7 @@ func cleanOne() {
 
 // 读取角色配置
 func getRole() {
-	file, er := os.Open("./config/cfg/dist/gpt_role.txt")
+	file, er := os.Open("./config/cfg/dict/gpt_role.txt")
 	if er != nil {
 		err.Error(errors.New("读取角色配置文件失败:"+er.Error()), err.Normal)
 		isRead = true

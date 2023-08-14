@@ -9,16 +9,16 @@ import (
 
 // Config 配置文件模型
 type Config struct {
-	Monitor     monitor
-	Filter      filter
-	LLM         llm
-	Voice       voice
-	Speech      speech
-	Mood        mood
-	Proxy       proxy
-	Listen      listen
-	Application application
-	Tool        tool
+	Monitor     Monitor     `json:"monitor"`
+	Filter      Filter      `json:"filter"`
+	LLM         LLM         `json:"llm"`
+	Voice       Voice       `json:"voice"`
+	Speech      Speech      `json:"speech"`
+	Mood        Mood        `json:"mood"`
+	Proxy       Proxy       `json:"proxy"`
+	Listen      Listen      `json:"listen"`
+	Application application `json:"application"`
+	Tool        tool        `json:"tool"`
 }
 
 //配置模块

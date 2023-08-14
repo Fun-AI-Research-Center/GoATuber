@@ -19,7 +19,7 @@ func InDict(e *engine.Engine, message listen.ChatStruct) {
 
 func filterDict(e *engine.Engine, ms listen.ChatStruct) {
 	filter := New()
-	er := filter.LoadWordDict("config/cfg/dist/"+e.Config.Application.Dict.FilterDictName, 0)
+	er := filter.LoadWordDict("config/cfg/dict/"+e.Config.Application.Dict.FilterDictName, 0)
 	if er != nil {
 		err.Error(errors.New("加载过滤字典失败,"+er.Error()), err.Normal)
 		return
@@ -37,7 +37,7 @@ func filterDict(e *engine.Engine, ms listen.ChatStruct) {
 
 func FilterAI(e *engine.Engine) {
 	filter := New()
-	er := filter.LoadWordDict("config/cfg/dist/"+e.Config.Application.Dict.FilterDictName, 0)
+	er := filter.LoadWordDict("config/cfg/dict/"+e.Config.Application.Dict.FilterDictName, 0)
 	if er != nil {
 		err.Error(errors.New("加载过滤字典失败（AI）："+er.Error()), err.Fatal)
 	}

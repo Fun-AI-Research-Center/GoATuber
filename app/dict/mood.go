@@ -21,7 +21,7 @@ type mood struct {
 
 func GetMood(e *engine.Engine, msg *engine.MessageSlice) {
 	search := New()
-	er := search.LoadWordDict("config/cfg/dist/"+e.Config.Application.Dict.MoodDictName, 0)
+	er := search.LoadWordDict("config/cfg/dict/"+e.Config.Application.Dict.MoodDictName, 0)
 	if er != nil {
 		err.Error(errors.New("加载情感词汇本体失败："+er.Error()), err.Normal)
 		return
