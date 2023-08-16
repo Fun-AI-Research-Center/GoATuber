@@ -3,7 +3,7 @@
 </div>
 
 ## 这是什么
-GoAtuber是一个基于golang与javascript的AI Vtber框架项目，通过简单的配置文件修改，即可打造出一个AI vtuber。
+GoAtuber是一个基于golang、vue3和typescript的AI Vtber框架项目，通过简单的配置文件修改，即可打造出一个AI vtuber。
 ---
 作者在学js，停更一段时间。TODO:网页控制器，调度全局信号。
 
