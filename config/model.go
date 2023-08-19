@@ -5,7 +5,7 @@ package config
 // Monitor 消息监听
 type Monitor struct {
 	BiliBili bool `json:"bilibili" mapstructure:"bilibili"`
-	Other    bool `json:"other" mapstructure:"other"`
+	None     bool `json:"none" mapstructure:"none"`
 }
 
 // Filter 过滤器

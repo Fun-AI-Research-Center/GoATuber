@@ -12,6 +12,10 @@ import (
 
 //修改cfg目录下面的文件
 
+//一些逻辑问题：运行之后应该不允许修改与运行时相关的通用配置，只能修改工具包和应用包的配置
+//但是似乎没有必要这么严格。因为只有监听模块是在最开始加载死了的。其它的都是通过后续的布尔变量进行判断，选择调用哪一个模块。
+//看之后有没有bug再讨论。感觉有极小的概率出现并发写冲突。
+
 func modifyDict(c *gin.Context) {
 	var dict config.Dict
 	if er := c.ShouldBindJSON(&dict); er != nil {
