@@ -8,6 +8,6 @@ presence_penalty = 0
 frequency_penalty = 0
 
   [MemoryAndClean]
-    short_memory_token_limit=500
-    clean_all=true
-    clean_one=false
+    ShortMemoryTokenLimit=500
+    CleanAll=true
+    CleanOne=false

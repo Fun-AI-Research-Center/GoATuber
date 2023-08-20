@@ -1,3 +1,3 @@
-  openai = false
-  azure_openai = true
-  none = false
+  Openai = false
+  AzureOpenai = true
+  None = false

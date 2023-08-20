@@ -1,6 +1,6 @@
-use_memory=false
+UseMemory=false
 
-use_openai=false
-use_azure=true
+UseOpenAI=false
+UseAzure=true
 
-use_pinecone=true
+UsePinecone=true

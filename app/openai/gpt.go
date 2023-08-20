@@ -91,8 +91,8 @@ func generateMessage(e *engine.Engine, message engine.PriorityMessage) error {
 	log.Printf("openai生成内容：%s\nModel: %s TotalTokens: %d+%d=%d", openAiRcv.Choices[0].Message.Content, openAiRcv.Model, openAiRcv.Usage.PromptTokens, openAiRcv.Usage.CompletionTokes, openAiRcv.Usage.TotalTokens)
 	e.Message.Message = strings.Replace(openAiRcv.Choices[0].Message.Content, "\n\n", "", 1)
 
-	//检查短期记忆是否达到token使用上限
-	if openAiRcv.Usage.TotalTokens > config.MemoryAndClean.ShortMemoryTokenLimit {
+	//检查短期记忆是否达到token使用上限（且短期记忆限制不为0）
+	if config.MemoryAndClean.ShortMemoryTokenLimit!=0&&openAiRcv.Usage.TotalTokens > config.MemoryAndClean.ShortMemoryTokenLimit {
 		cleanMemory(e)
 	}
 	//短期记忆形成

@@ -4,47 +4,47 @@ package config
 
 // Monitor 消息监听
 type Monitor struct {
-	BiliBili bool `json:"bilibili" mapstructure:"bilibili"`
-	None     bool `json:"none" mapstructure:"none"`
+	BiliBili bool `json:"bilibili" mapstructure:"BiliBili"`
+	None     bool `json:"none" mapstructure:"None"`
 }
 
 // Filter 过滤器
 type Filter struct {
-	Dict  bool `json:"dict" mapstructure:"dict"`   //字典过滤器
-	Baidu bool `json:"baidu" mapstructure:"baidu"` //百度过滤器
-	None  bool `json:"none" mapstructure:"none"`   //其他过滤器
+	Dict  bool `json:"dict" mapstructure:"Dict"`   //字典过滤器
+	Baidu bool `json:"baidu" mapstructure:"Baidu"` //百度过滤器
+	None  bool `json:"none" mapstructure:"None"`   //其他过滤器
 }
 
 // LLM 语言模型配置
 type LLM struct {
-	Openai      bool `json:"openai" mapstructure:"openai"`
-	AzureOpenai bool `json:"azure_openai" mapstructure:"azure_openai"`
-	None        bool `json:"none" mapstructure:"none"`
+	Openai      bool `json:"openai" mapstructure:"Openai"`
+	AzureOpenai bool `json:"azure_openai" mapstructure:"AzureOpenai"`
+	None        bool `json:"none" mapstructure:"None"`
 }
 
 // Voice 语音模型配置
 type Voice struct {
-	Azure bool `json:"azure" mapstructure:"azure"`
-	XFyun bool `json:"xfyun" mapstructure:"xfyun"`
-	None  bool `json:"none" mapstructure:"none"`
+	Azure bool `json:"azure" mapstructure:"Azure"`
+	XFyun bool `json:"xfyun" mapstructure:"XFyun"`
+	None  bool `json:"none" mapstructure:"None"`
 }
 
 // Speech 对话配置
 type Speech struct {
-	Azure bool `json:"azure" mapstructure:"azure"`
-	None  bool `json:"none" mapstructure:"none"`
+	Azure bool `json:"azure" mapstructure:"Azure"`
+	None  bool `json:"none" mapstructure:"None"`
 }
 
 // Mood 情感配置
 type Mood struct {
-	Dict bool `json:"dict" mapstructure:"dict"`
-	None bool `json:"none" mapstructure:"none"`
+	Dict bool `json:"dict" mapstructure:"Dict"`
+	None bool `json:"none" mapstructure:"None"`
 }
 
 // Proxy 代理配置
 type Proxy struct {
-	UseProxy bool   `json:"use_proxy" mapstructure:"use_proxy"`
-	ProxyURL string `json:"proxy_url" mapstructure:"proxy_url"`
+	UseProxy bool   `json:"use_proxy" mapstructure:"UseProxy"`
+	ProxyURL string `json:"proxy_url" mapstructure:"ProxyURL"`
 }
 
 // Listen 监听包

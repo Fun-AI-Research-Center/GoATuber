@@ -11,14 +11,14 @@ import (
 
 // Memory 记忆相关
 type Memory struct {
-	UseMemory bool `json:"use_memory" mapstructure:"use_memory"` //使用LLM长期记忆
+	UseMemory bool `json:"use_memory" mapstructure:"UseMemory"` //使用LLM长期记忆
 
 	//embedding相关
-	UseOpenAI bool `json:"use_openai" mapstructure:"use_openai"` //使用OpenAI进行embedding
-	UseAzure  bool `json:"use_azure" mapstructure:"use_azure"`   //使用Azure进行embedding
+	UseOpenAI bool `json:"use_openai" mapstructure:"UseOpenAI"` //使用OpenAI进行embedding
+	UseAzure  bool `json:"use_azure" mapstructure:"UseAzure"`   //使用Azure进行embedding
 
 	//记忆向量库
-	UsePinecone bool `json:"use_pinecone" mapstructure:"use_pinecone"` //使用Pinecone进行记忆向量库
+	UsePinecone bool `json:"use_pinecone" mapstructure:"UsePinecone"` //使用Pinecone进行记忆向量库
 }
 
 func (config *Config) initMemoryConfig() {
