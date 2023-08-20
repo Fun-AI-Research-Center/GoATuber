@@ -136,8 +136,8 @@ func (config *Config) initListener() {
 	if config.Monitor.BiliBili {
 		//初始化BiliBili监听
 		config.initBiliBili()
-	} else if config.Monitor.Other {
-
+	} else if config.Monitor.None {
+		return
 	} else {
 		err.Error(errors.New("no listen module is enabled"), err.Fatal)
 	}

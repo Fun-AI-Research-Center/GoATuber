@@ -12,33 +12,33 @@ type Monitor struct {
 type Filter struct {
 	Dict  bool `json:"dict" mapstructure:"dict"`   //字典过滤器
 	Baidu bool `json:"baidu" mapstructure:"baidu"` //百度过滤器
-	Other bool `json:"other" mapstructure:"other"` //其他过滤器
+	None  bool `json:"none" mapstructure:"none"`   //其他过滤器
 }
 
 // LLM 语言模型配置
 type LLM struct {
 	Openai      bool `json:"openai" mapstructure:"openai"`
 	AzureOpenai bool `json:"azure_openai" mapstructure:"azure_openai"`
-	Other       bool `json:"other" mapstructure:"other"`
+	None        bool `json:"none" mapstructure:"none"`
 }
 
 // Voice 语音模型配置
 type Voice struct {
 	Azure bool `json:"azure" mapstructure:"azure"`
 	XFyun bool `json:"xfyun" mapstructure:"xfyun"`
-	Other bool `json:"other" mapstructure:"other"`
+	None  bool `json:"none" mapstructure:"none"`
 }
 
 // Speech 对话配置
 type Speech struct {
 	Azure bool `json:"azure" mapstructure:"azure"`
-	Other bool `json:"other" mapstructure:"other"`
+	None  bool `json:"none" mapstructure:"none"`
 }
 
 // Mood 情感配置
 type Mood struct {
-	Dict  bool `json:"dict" mapstructure:"dict"`
-	Other bool `json:"other" mapstructure:"other"`
+	Dict bool `json:"dict" mapstructure:"dict"`
+	None bool `json:"none" mapstructure:"none"`
 }
 
 // Proxy 代理配置

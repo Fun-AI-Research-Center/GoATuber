@@ -33,8 +33,6 @@ func handelChat(chat listen.ChatStruct, e *engine.Engine) {
 		dict.InDict(e, chat)
 	} else if e.Config.Filter.Baidu {
 		baidu.FilterByBaidu(e, chat)
-	} else if e.Config.Filter.Other {
-
 	} else {
 		//不过滤
 	}

@@ -72,10 +72,8 @@ func chooseLLMModel(e *engine.Engine, message engine.PriorityMessage) {
 		er = openai.GetMessage(e, message)
 	} else if config.AzureOpenai {
 		er = azure.GetMessage(e, message)
-	} else if config.Other {
-
 	} else {
-		err.Error(errors.New("错误，没有任何LLM模块被开启——假如你开启了LLM模块仍然出现此报错，请在项目页面上提交issue"), err.Fatal)
+		err.Error(errors.New("错误，没有任何LLM模块被开启——假如你开启了LLM模块仍然出现此报错，请在项目页面上提交issue。"), err.Fatal)
 	}
 
 	//错误处理

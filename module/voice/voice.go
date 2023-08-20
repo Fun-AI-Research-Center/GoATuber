@@ -65,8 +65,6 @@ func handelVoice(e *engine.Engine, message *engine.MessageSlice, wg *sync.WaitGr
 
 	} else if config.Azure {
 		er = azure.GetVoice(e, message)
-	} else if config.Other {
-
 	} else {
 		err.Error(errors.New("错误，没有任何语音合成模块被开启——假如你开启了语音识别模块仍然出现此报错，请在项目页面上提交issue"), err.Fatal)
 	}

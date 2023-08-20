@@ -32,8 +32,8 @@ func handelEmotion(e *engine.Engine, ms *engine.MessageSlice, wg *sync.WaitGroup
 	config := e.Config.Mood
 	if config.Dict {
 		dict.GetMood(e, ms)
-	} else if config.Other {
-
+	} else if config.None {
+		ms.Emotion.Emo = "health"
 	} else {
 
 	}

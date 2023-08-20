@@ -79,6 +79,8 @@ func max(moodNum [7]float64) string {
 			maxFlag = i
 		}
 	}
+
+	//我超，魔数
 	if maxFlag == 0 {
 		return "happy"
 	} else if maxFlag == 1 {
