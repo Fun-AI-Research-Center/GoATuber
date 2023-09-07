@@ -112,6 +112,7 @@ const (
 	SpeechMessage
 	DirectReadNeedMood
 	DirectReadWithoutMood
+	AdministratorChatMessage
 )
 
 const (

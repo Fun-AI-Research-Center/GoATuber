@@ -140,12 +140,12 @@ func splitSentence(e *engine.Engine) {
 // 获得消息类型
 func getMessageType(message engine.PriorityMessage) int {
 	switch message.MessageType {
-	case engine.NormalChat, engine.SuperChat, engine.GiftChat, engine.Subscription:
+	case engine.NormalChat, engine.SuperChat, engine.GiftChat, engine.Subscription, engine.AdministratorChatMessage:
 		return engine.Chat
 	case engine.SpeechMessage:
 		return engine.Speech
 	default:
-		err.Error(errors.New("作者疑似有点神志不清了，去提个issue叫一下他。前后端交互message-type："+strconv.Itoa(message.MessageType)), err.Normal)
+		err.Error(errors.New("作者疑似有点神志不清了，要不就是他忘了这里（llm.go），去提个issue叫一下他。前后端交互message-type："+strconv.Itoa(message.MessageType)), err.Normal)
 		return engine.Chat
 	}
 }
