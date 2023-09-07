@@ -45,11 +45,13 @@ func listenVoice(e *engine.Engine) {
 			getErrorInfo <- struct{}{}
 
 			//错误信息处理
-			if <-postErrorInfo {
+			isErr := <-postErrorInfo
+			if isErr {
 				e.Ch.StartNext <- struct{}{}
 				if e.Message.MessageType == engine.Speech {
 					e.Ch.SpeechFail <- struct{}{}
 				}
+				continue
 			}
 
 			//将消息发送到前端
@@ -65,8 +67,6 @@ func handelVoice(e *engine.Engine, message *engine.MessageSlice, wg *sync.WaitGr
 
 	} else if config.Azure {
 		er = azure.GetVoice(e, message)
-	} else if config.Other {
-
 	} else {
 		err.Error(errors.New("错误，没有任何语音合成模块被开启——假如你开启了语音识别模块仍然出现此报错，请在项目页面上提交issue"), err.Fatal)
 	}
@@ -80,6 +80,7 @@ func handelVoice(e *engine.Engine, message *engine.MessageSlice, wg *sync.WaitGr
 			handelVoice(e, message, wg, tryCount)
 		} else {
 			errorHandel <- struct{}{}
+			wg.Done()
 		}
 	}
 
