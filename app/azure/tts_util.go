@@ -29,7 +29,8 @@ func GetAuthentication(e *engine.Engine) {
 	ticker := time.NewTimer(0 * time.Minute)
 	defer ticker.Stop()
 
-	for range ticker.C {
+	for {
+		<-ticker.C
 		resp, er := client.Do(req)
 		if er != nil {
 			err.Error(errors.New("发送请求错误（azure-tts模块）:"+er.Error()), err.Normal)
