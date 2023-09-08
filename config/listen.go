@@ -12,9 +12,9 @@ import (
 
 //初始化BiliBili监听
 
-// BiliBili监听结构体
-type biliBili struct {
-	RoomID int `mapstructure:"room_id"` //房间号
+// BiliBili BiliBili监听结构体
+type BiliBili struct {
+	RoomID int `json:"room_id" mapstructure:"RoomID"` //房间号
 }
 
 func (config *Config) initBiliBili() {
