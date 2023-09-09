@@ -51,9 +51,9 @@ func initControlRouter() {
 		//工具包
 		config.POST("/memory", modifyMemory)
 		//应用包
-		config.POST("/azure", modifyAzure)
+		config.POST("/azure", modifyAzure) //TODO:azure需要再加上对gpt_role的设置接口
 		config.POST("/baidu", modifyBaidu)
-		config.POST("/openai", modifyOpenai)
+		config.POST("/openai", modifyOpenai) //TODO:openai需要再加上对gpt_role的设置接口
 		config.POST("/pinecone", modifyPinecone)
 		config.POST("/xunfei", modifyXfyun)
 	}
@@ -67,7 +67,7 @@ func initControlRouter() {
 
 	//启动进程
 	r.GET("/run", run)
-	//终止进程
+	//终止进程（目前没用——和项目结构有关系，得研究一下怎么切开
 	r.GET("/stop", stop)
 
 	//调用浏览器打开前端页面
