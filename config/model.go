@@ -2,67 +2,67 @@ package config
 
 //配置文件结构体模型
 
-// 消息监听
-type monitor struct {
-	BiliBili bool `mapstructure:"bilibili"`
-	Other    bool `mapstructure:"other"`
+// Monitor 消息监听
+type Monitor struct {
+	BiliBili bool `json:"bilibili" mapstructure:"BiliBili"`
+	None     bool `json:"none" mapstructure:"None"`
 }
 
-// 过滤器
-type filter struct {
-	Dict  bool `mapstructure:"dict"`  //字典过滤器
-	Baidu bool `mapstructure:"baidu"` //百度过滤器
-	Other bool `mapstructure:"other"` //其他过滤器
+// Filter 过滤器
+type Filter struct {
+	Dict  bool `json:"dict" mapstructure:"Dict"`   //字典过滤器
+	Baidu bool `json:"baidu" mapstructure:"Baidu"` //百度过滤器
+	None  bool `json:"none" mapstructure:"None"`   //其他过滤器
 }
 
-// 语言模型配置
-type llm struct {
-	Openai      bool `mapstructure:"openai"`
-	AzureOpenai bool `mapstructure:"azure_openai"`
-	Other       bool `mapstructure:"other"`
+// LLM 语言模型配置
+type LLM struct {
+	Openai      bool `json:"openai" mapstructure:"Openai"`
+	AzureOpenai bool `json:"azure_openai" mapstructure:"AzureOpenai"`
+	None        bool `json:"none" mapstructure:"None"`
 }
 
-// 语音模型配置
-type voice struct {
-	Azure bool `mapstructure:"azure"`
-	XFyun bool `mapstructure:"xfyun"`
-	Other bool `mapstructure:"other"`
+// Voice 语音模型配置
+type Voice struct {
+	Azure bool `json:"azure" mapstructure:"Azure"`
+	XFyun bool `json:"xfyun" mapstructure:"XFyun"`
+	None  bool `json:"none" mapstructure:"None"`
 }
 
-// 对话配置
-type speech struct {
-	Azure bool `mapstructure:"azure"`
-	Other bool `mapstructure:"other"`
+// Speech 对话配置
+type Speech struct {
+	Azure bool `json:"azure" mapstructure:"Azure"`
+	None  bool `json:"none" mapstructure:"None"`
 }
 
-// 情感配置
-type mood struct {
-	Dict  bool `mapstructure:"dict"`
-	Other bool `mapstructure:"other"`
+// Mood 情感配置
+type Mood struct {
+	Dict bool `json:"dict" mapstructure:"Dict"`
+	None bool `json:"none" mapstructure:"None"`
 }
 
-// 代理配置
-type proxy struct {
-	UseProxy bool   `mapstructure:"use_proxy"`
-	ProxyURL string `mapstructure:"proxy_url"`
+// Proxy 代理配置
+type Proxy struct {
+	UseProxy bool   `json:"use_proxy" mapstructure:"UseProxy"`
+	ProxyURL string `json:"proxy_url" mapstructure:"ProxyURL"`
 }
 
-// 监听包
-type listen struct {
-	BiliBili biliBili //BiliBili监听
+// Listen 监听包
+type Listen struct {
+	BiliBili BiliBili `json:"bilibili"` //BiliBili监听
 }
 
 // 应用包
 type application struct {
-	Openai   openai   //OpenAI
-	Azure    azure    //Azure
-	XunFei   xunFei   //讯飞
-	BaiDu    baiDu    //百度
-	Pinecone pinecone //Pinecone
-	Dict     dict     //字典配置
+	Openai   Openai   `json:"openai"`   //OpenAI
+	Azure    Azure    `json:"azure"`    //Azure
+	XunFei   XunFei   `json:"xunfei"`   //讯飞
+	BaiDu    BaiDu    `json:"baidu"`    //百度
+	Pinecone Pinecone `json:"pinecone"` //Pinecone
+	Dict     Dict     `json:"dict"`     //字典配置
 }
 
 // 工具包
 type tool struct {
-	Memory memory //记忆相关
+	Memory Memory `json:"memory"` //记忆相关
 }

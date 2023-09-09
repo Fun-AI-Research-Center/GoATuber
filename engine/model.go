@@ -61,6 +61,9 @@ type ch struct {
 	//speech相关
 	GetSpeech  chan []byte   //收到来自前端的speech信息
 	SpeechFail chan struct{} //语音消息处理失败，通知前端解除阻塞
+
+	//拓展槽
+	ExpendToQueue chan PriorityMessage //拓展擦传递给优先队列
 }
 
 // PriorityMessage 优先队列
@@ -109,6 +112,7 @@ const (
 	SpeechMessage
 	DirectReadNeedMood
 	DirectReadWithoutMood
+	AdministratorChatMessage
 )
 
 const (

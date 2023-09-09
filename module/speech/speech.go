@@ -35,8 +35,6 @@ func speechToText(e *engine.Engine, speechData *bytes.Buffer) {
 	//根据配置文件选择语音转文本模块
 	if config.Azure {
 		text, er = azure.GetSpeech(e, speechData)
-	} else if config.Other {
-
 	} else {
 		err.Error(errors.New("没有启用任何语音转文本模块"), err.Normal)
 	}
@@ -56,7 +54,9 @@ func speechToText(e *engine.Engine, speechData *bytes.Buffer) {
 	}
 
 	//将消息体放入优先队列
+	e.PriorityQueue.Mu.Lock()
 	heap.Push(&e.PriorityQueue.Queue, message)
+	e.PriorityQueue.Mu.Unlock()
 
 	//当监控线程因为空队列阻塞时，发送信号
 	if e.PriorityQueue.IsEmpty {

@@ -1,43 +1,43 @@
   [AzureOpenai]
-    api_key = "your_api_key_here"
-    end_point = "your_end_point"
-    api_version = "2023-07-01-preview"
-    deployment_id = "your_deployment_id"
-    model = "gpt-3.5-turbo-0613"
-    temperature = 0.3
-    top_p = 1
-    max_tokens = 1000
-    stop = "your_stop_here"
-    presence_penalty = 0
-    frequency_penalty = 0
+    ApiKey = "your_api_key_here"
+    EndPoint = "your_end_point"
+    ApiVersion = "2023-07-01-preview"
+    DeploymentId = "your_deployment_id"
+    Model = "gpt-3.5-turbo-0613"
+    Temperature = 0.3
+    TopP = 1
+    MaxTokens = 1000
+    Stop = "your_stop_here"
+    PresencePenalty = 0
+    FrequencyPenalty = 0
 
     [AzureOpenai.MemoryAndClean]
-      short_memory_token_limit=500
-      clean_all=true
-      clean_one=false
+      ShortMemoryTokenLimit=500
+      CleanAll=true
+      CleanOne=false
 
     [AzureOpenai.AzureEmbedding]
-      deployment_id = "your_deployment_id"
-      api_version = "2023-05-15"
+      DeploymentID = "your_deployment_id"
+      ApiVersion = "2023-05-15"
 
   [AzureTTS]
-    api_key = "your_api_key_here"
-    end_point = "your_end_point"
+    ApiKey = "your_api_key_here"
+    EndPoint = "your_end_point"
 
     [AzureTTS.Speak]
-      version = "1.0"
-      xml_lang = "cn"
-      xmlns_mstts = "https://www.w3.org/2001/mstts"
-      xmlns = "http://www.w3.org/2001/10/synthesis"
+      Version = "1.0"
+      XmlLang = "cn"
+      XmlnsMstts = "https://www.w3.org/2001/mstts"
+      Xmlns = "http://www.w3.org/2001/10/synthesis"
 
     [AzureTTS.Voice]
-      name = "zh-CN-XiaoyiNeural"
-      effect = ""
-      rate = "+25%"
-      volume = "+0.00%"
+      Name = "zh-CN-XiaoyiNeural"
+      Effect = ""
+      Rate = "+0.00%"
+      Volume = "+0.00%"
 
   [AzureSTT]
-    api_key = "your_api_key_here"
-    speech_region = "your_speech_region_here"
-    language = "your_language_here"
-    format = "your_format_here"
+    ApiKey = "your_api_key_here"
+    SpeechRegion = "your_speech_region_here"
+    Language = "your_language_here"
+    Format = "your_format_here"
