@@ -33,6 +33,8 @@ type azureOpenai struct {
 	PresencePenalty  float64 `json:"presence_penalty" mapstructure:"PresencePenalty"`   //presence_penalty
 	FrequencyPenalty float64 `json:"frequency_penalty" mapstructure:"FrequencyPenalty"` //frequency_penalty
 
+	Prompt string `json:"prompt" mapstructure:"Prompt"` //提示(前端将提示句按照特殊规则拼装为字符串，后端再解析)
+
 	MemoryAndClean memoryAndClean `json:"memory_and_clean"` //记忆和清理
 	AzureEmbedding azureEmbedding `json:"azure_embedding"`  //azure embedding,嵌入服务
 }
@@ -155,13 +157,16 @@ func (config *Config) initBaidu() {
 
 // Openai OpenAI结构体
 type Openai struct {
-	ApiKey           string         `json:"api_key" mapstructure:"api_key"`                    //API密钥
-	Model            string         `json:"model" mapstructure:"model"`                        //模型
-	Temperature      float64        `json:"temperature" mapstructure:"temperature"`            //温度
-	TopP             float64        `json:"topP" mapstructure:"top_p"`                         //top_p
-	MaxTokens        int            `json:"maxTokens" mapstructure:"max_tokens"`               //最大token
-	Stop             string         `json:"stop" mapstructure:"stop"`                          //停止标志
-	PresencePenalty  float64        `json:"presencePenalty" mapstructure:"presence_penalty"`   //presence_penalty
+	ApiKey          string  `json:"api_key" mapstructure:"api_key"`                  //API密钥
+	Model           string  `json:"model" mapstructure:"model"`                      //模型
+	Temperature     float64 `json:"temperature" mapstructure:"temperature"`          //温度
+	TopP            float64 `json:"topP" mapstructure:"top_p"`                       //top_p
+	MaxTokens       int     `json:"maxTokens" mapstructure:"max_tokens"`             //最大token
+	Stop            string  `json:"stop" mapstructure:"stop"`                        //停止标志
+	PresencePenalty float64 `json:"presencePenalty" mapstructure:"presence_penalty"` //presence_penalty
+
+	Prompt string `json:"prompt" mapstructure:"Prompt"` //提示(前端将提示句按照特殊规则拼装为字符串，后端再解析)
+
 	FrequencyPenalty float64        `json:"frequencyPenalty" mapstructure:"frequency_penalty"` //frequency_penalty
 	MemoryAndClean   memoryAndClean `json:"memory_and_clean"`                                  //记忆相关
 }

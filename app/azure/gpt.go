@@ -20,7 +20,7 @@ import (
 // GetMessage 从引擎中获取消息
 func GetMessage(e *engine.Engine, message engine.PriorityMessage) error {
 	if !isRead {
-		getRole()
+		getRole(e)
 	}
 	return generateMessage(e, message)
 }

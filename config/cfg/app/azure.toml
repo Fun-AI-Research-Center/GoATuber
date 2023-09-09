@@ -10,6 +10,7 @@
     Stop = "your_stop_here"
     PresencePenalty = 0
     FrequencyPenalty = 0
+    Prompt = ''
 
     [AzureOpenai.MemoryAndClean]
       ShortMemoryTokenLimit=500
