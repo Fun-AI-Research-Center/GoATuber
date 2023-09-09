@@ -46,4 +46,5 @@ func getRole(e *engine.Engine) {
 		}
 		roleMessage = append(roleMessage, role)
 	}
+	isRead = true
 }
