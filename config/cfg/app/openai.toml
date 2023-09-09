@@ -6,6 +6,7 @@ max_tokens = 10000
 stop = "your_stop_here"
 presence_penalty = 0
 frequency_penalty = 0
+Prompt=''
 
   [MemoryAndClean]
     ShortMemoryTokenLimit=500

@@ -1,13 +1,9 @@
 package openai
 
 import (
-	"bufio"
-	"errors"
-	"os"
 	"strings"
 
 	"GoATuber-2.0/engine"
-	"GoATuber-2.0/err"
 )
 
 // 当token达到设置的上限的时候，清理记忆释放token
@@ -32,27 +28,22 @@ func cleanOne() {
 }
 
 // 读取角色配置
-func getRole() {
-	file, er := os.Open("./config/cfg/dist/gpt_role.txt")
-	if er != nil {
-		err.Error(errors.New("读取角色配置文件失败:"+er.Error()), err.Normal)
-		isRead = true
+func getRole(e *engine.Engine) {
+	//从engine中获取prompt
+	prompt := e.Config.Application.Openai.Prompt
+	//当prompt为空的时候直接返回即可
+	if prompt == "" {
 		return
 	}
-	defer file.Close()
-
-	// 读取角色配置文件
-	scanner := bufio.NewScanner(file)
-	scanner.Split(bufio.ScanLines)
-	for scanner.Scan() {
-		text := scanner.Text()
-		texts := strings.Split(text, ":")
+	//解析prompt
+	promptSlice := strings.Split(prompt, "|") //以|对句子进行分割
+	for _, v := range promptSlice {
+		roleSlice := strings.Split(v, ":") //以:对角色和句子进行分割
 		var role = requestMessages{
-			Role:    texts[0],
-			Content: strings.Join(texts[1:], ":"),
+			Role:    roleSlice[0],
+			Content: strings.Join(roleSlice[1:], ":"),
 			Name:    "system",
 		}
 		roleMessage = append(roleMessage, role)
 	}
-	isRead = true
 }
