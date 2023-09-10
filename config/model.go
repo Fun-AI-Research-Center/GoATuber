@@ -19,6 +19,7 @@ type Filter struct {
 type LLM struct {
 	Openai      bool `json:"openai" mapstructure:"Openai"`
 	AzureOpenai bool `json:"azure_openai" mapstructure:"AzureOpenai"`
+	XunFei      bool `json:"xun_fei" mapstructure:"XunFei"`
 	None        bool `json:"none" mapstructure:"None"`
 }
 

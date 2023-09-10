@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strconv"
 
+	"GoATuber-2.0/app/XFyun"
 	"GoATuber-2.0/app/azure"
 	"GoATuber-2.0/app/openai"
 	"GoATuber-2.0/engine"
@@ -72,6 +73,8 @@ func chooseLLMModel(e *engine.Engine, message engine.PriorityMessage) {
 		er = openai.GetMessage(e, message)
 	} else if config.AzureOpenai {
 		er = azure.GetMessage(e, message)
+	} else if config.XunFei {
+		er = XFyun.GetMessage(e, message)
 	} else {
 		err.Error(errors.New("错误，没有任何LLM模块被开启——假如你开启了LLM模块仍然出现此报错，请在项目页面上提交issue。"), err.Fatal)
 	}

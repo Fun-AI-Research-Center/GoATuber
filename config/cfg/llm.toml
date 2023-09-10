@@ -1,3 +1,4 @@
   Openai = false
   AzureOpenai = true
+  XunFei = false
   None = false
