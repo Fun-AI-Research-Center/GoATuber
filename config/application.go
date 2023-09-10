@@ -90,7 +90,26 @@ func (config *Config) initAzure() {
 
 // XunFei 讯飞结构体
 type XunFei struct {
-	XunFeiTTS xunFeiTTS `json:"xun_fei_tts"` //讯飞 tts,文本转语音服务
+	XunFeiSpark xunFeiSpark `json:"xun_fei_spark"` //讯飞 星火大模型,文本生成服务
+	XunFeiTTS   xunFeiTTS   `json:"xun_fei_tts"`   //讯飞 tts,文本转语音服务
+}
+
+type xunFeiSpark struct {
+	HostURL   string `json:"host_url" mapstructure:"HostURL"`     //请求地址。如ws(s)://spark-api.xf-yun.com/v2.1/chat
+	AppID     string `json:"app_id" mapstructure:"AppID"`         //应用ID
+	ApiKey    string `json:"api_key" mapstructure:"ApiKey"`       //API密钥
+	ApiSecret string `json:"api_secret" mapstructure:"ApiSecret"` //API密钥
+
+	//以下为请求参数
+	Domain      string  `json:"domain" mapstructure:"Domain"`           //领域
+	Temperature float64 `json:"temperature" mapstructure:"Temperature"` //温度
+	MaxTokens   int     `json:"max_tokens" mapstructure:"MaxTokens"`    //最大token
+	TopK        int     `json:"top_k" mapstructure:"TopK"`              //top_k
+	Auditing    string  `json:"auditing" mapstructure:"Auditing"`       //审核方式。有没有这个字段我暂且蒙古。
+
+	Prompt string `json:"prompt" mapstructure:"Prompt"` //提示(前端将提示句按照特殊规则拼装为字符串，后端再解析)
+
+	MemoryAndClean memoryAndClean `json:"memory_and_clean"` //记忆和清理
 }
 
 type xunFeiTTS struct {
