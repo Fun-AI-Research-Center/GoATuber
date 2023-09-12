@@ -1,3 +1,17 @@
-  [BaiduFilter]
-    api_key = "your_api_key_here"
-    secret_key = "your_secret_key_here"
+[BaiduErnie]
+APPID=""
+APIKey=""
+SecretKey=""
+Temperature=0.95
+TopP=0.8
+PenaltyScore=1.0
+Prompt=""
+
+    [BaiduErnie.MemoryAndClean]
+      ShortMemoryTokenLimit=500
+      CleanAll=true
+      CleanOne=false
+
+[BaiduFilter]
+APIKey = "your_api_key_here"
+SecretKey = "your_secret_key_here"

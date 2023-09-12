@@ -3,7 +3,6 @@ package baidu
 import (
 	"errors"
 	"io"
-	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -13,7 +12,7 @@ import (
 	jsoniter "github.com/json-iterator/go"
 )
 
-func GetAccessToken(e *engine.Engine) {
+func GetFilterAccessToken(e *engine.Engine) {
 	baiduFilterCfg := e.Config.Application.BaiDu.BaiduFilter
 
 	url := "https://aip.baidubce.com/oauth/2.0/token?grant_type=client_credentials&client_id=" + baiduFilterCfg.APIKey + "&client_secret=" + baiduFilterCfg.SecretKey
@@ -35,13 +34,13 @@ func GetAccessToken(e *engine.Engine) {
 
 	body, er := io.ReadAll(res.Body)
 	if er != nil {
-		log.Fatalf("%v", er)
+		err.Error(errors.New("获取access token失败:"+er.Error()), err.Normal)
 	}
 
 	var json = jsoniter.ConfigCompatibleWithStandardLibrary
 	er = json.Unmarshal(body, &baiduFilterCfg)
 	if er != nil {
-
+		err.Error(errors.New("获取access token失败:"+er.Error()), err.Normal)
 	}
 	if baiduFilterCfg.AccessToken == "" {
 		err.Error(errors.New("获取access token失败:"+er.Error()), err.Normal)
@@ -50,12 +49,12 @@ func GetAccessToken(e *engine.Engine) {
 	// 保存access token
 	e.Config.Application.BaiDu.BaiduFilter.AccessToken = baiduFilterCfg.AccessToken
 	e.Config.Application.BaiDu.BaiduFilter.ExpiresIn = baiduFilterCfg.ExpiresIn
-	go clock(e)
+	go filterClock(e)
 }
 
 // 计时器，access token过期之前一个小时自动重申请access token
-func clock(e *engine.Engine) {
+func filterClock(e *engine.Engine) {
 	timer := time.After(time.Duration(e.Config.Application.BaiDu.BaiduFilter.ExpiresIn-3600) * time.Second)
 	<-timer
-	go GetAccessToken(e)
+	go GetFilterAccessToken(e)
 }

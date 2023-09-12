@@ -147,12 +147,32 @@ func (config *Config) initXunFei() {
 // BaiDu 百度结构体
 type BaiDu struct {
 	BaiduFilter baiduFilter `json:"baidu_filter"` //百度过滤服务
+	BaiduErnie  baiduErnie  `json:"baidu_ernie"`
+}
+
+// 百度 文心一言服务
+type baiduErnie struct {
+	APPID     string `json:"app_id" mapstructure:"APPID"`
+	APIKey    string `json:"api_key" mapstructure:"APIKey"`
+	SecretKey string `json:"secret_key" mapstructure:"SecretKey"`
+
+	//Stream bool `json:"stream" mapstructure:"Stream"`//是否使用流式接口（这个疑似是我的事
+	Temperature  float64 `json:"temperature" mapstructure:"Temperature"`    //默认0.95。数值越高越随机。范围0到1。
+	TopP         float64 `json:"top_p" mapstructure:"TopP"`                 //取值越大，生成的文本多样性越高。范围0到1.0，默认0.8。建议top_p和温度不同时更改。
+	PenaltyScore float64 `json:"penalty_score" mapstructure:"PenaltyScore"` //通过对已生成的token增加惩罚，减少重复生成的现象。范围1到2，默认为1。
+
+	Prompt string `json:"prompt" mapstructure:"Prompt"` //提示(前端将提示句按照特殊规则拼装为字符串，后端再解析)
+
+	MemoryAndClean memoryAndClean `json:"memory_and_clean"` //记忆和清理
+
+	AccessToken string `json:"access_token"` //并不是配置文件
+	ExpiresIn   int    `json:"expires_in"`   //并不是配置文件
 }
 
 // 百度过滤服务结构体
 type baiduFilter struct {
-	APIKey      string `json:"api_key" mapstructure:"api_key"`
-	SecretKey   string `json:"secret_key" mapstructure:"secret_key"`
+	APIKey      string `json:"api_key" mapstructure:"APIKey"`
+	SecretKey   string `json:"secret_key" mapstructure:"SecretKey"`
 	AccessToken string `json:"access_token"` //并不是配置文件
 	ExpiresIn   int    `json:"expires_in"`   //并不是配置文件
 }

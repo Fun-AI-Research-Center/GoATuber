@@ -14,7 +14,7 @@ func InitFilter(e *engine.Engine) {
 	}
 
 	if e.Config.Filter.Baidu {
-		go baidu.GetAccessToken(e)
+		go baidu.GetFilterAccessToken(e)
 		go baidu.FilterAIbyBaidu(e)
 	}
 }

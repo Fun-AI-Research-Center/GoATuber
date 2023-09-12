@@ -112,6 +112,7 @@ func generateMessage(e *engine.Engine, message engine.PriorityMessage) error {
 	e.Ch.LLMProcess <- struct{}{}
 	return nil
 }
+
 func (firstResp openAiRcv) secondRequest(e *engine.Engine, firstRequest postDataWithFunction, url string) (openAiRcv, error) {
 	config := e.Config.Application.Azure.AzureOpenai
 
