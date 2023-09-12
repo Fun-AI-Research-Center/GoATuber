@@ -1,4 +1,5 @@
   Openai = false
   AzureOpenai = true
-  XunFei = false
+  XunFeiSpark = false
+  BaiduErnie = false
   None = false
