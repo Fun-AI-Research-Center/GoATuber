@@ -2,10 +2,10 @@ package control
 
 import "github.com/gin-gonic/gin"
 
-func respOK(c *gin.Context) {
+func respOK(c *gin.Context, data interface{}) {
 	c.JSON(200, gin.H{
 		"status": "ok",
-		"info":   "ok",
+		"info":   data,
 	})
 }
 

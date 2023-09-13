@@ -1,7 +1,7 @@
 package front
 
 import (
-	"io/ioutil"
+	"io"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,7 +26,7 @@ func getSpeech(c *gin.Context) {
 	}
 	defer speech.Close()
 
-	speechData, err := ioutil.ReadAll(speech)
+	speechData, err := io.ReadAll(speech)
 	if err != nil {
 		// 处理错误
 		c.JSON(500, gin.H{

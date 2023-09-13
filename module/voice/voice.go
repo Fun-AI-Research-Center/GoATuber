@@ -14,6 +14,8 @@ const (
 	url    = 1
 	base64 = 2
 	binary = 3
+
+	Song = 4
 )
 
 var (

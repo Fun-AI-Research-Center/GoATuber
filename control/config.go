@@ -43,7 +43,7 @@ func modifyDict(c *gin.Context) {
 	}
 
 	e.Config.Application.Dict = dict
-	respOK(c)
+	respOK(c, nil)
 }
 
 func modifyFilter(c *gin.Context) {
@@ -78,7 +78,7 @@ func modifyFilter(c *gin.Context) {
 	}
 
 	e.Config.Filter = filter
-	respOK(c)
+	respOK(c, nil)
 }
 
 func modifyLLM(c *gin.Context) {
@@ -113,7 +113,7 @@ func modifyLLM(c *gin.Context) {
 	}
 
 	e.Config.LLM = llm
-	respOK(c)
+	respOK(c, nil)
 }
 
 func modifyMonitor(c *gin.Context) {
@@ -148,7 +148,7 @@ func modifyMonitor(c *gin.Context) {
 	}
 
 	e.Config.Monitor = monitor
-	respOK(c)
+	respOK(c, nil)
 }
 
 func modifyMood(c *gin.Context) {
@@ -183,7 +183,7 @@ func modifyMood(c *gin.Context) {
 	}
 
 	e.Config.Mood = mood
-	respOK(c)
+	respOK(c, nil)
 }
 
 func modifyProxy(c *gin.Context) {
@@ -218,7 +218,7 @@ func modifyProxy(c *gin.Context) {
 	}
 
 	e.Config.Proxy = proxy
-	respOK(c)
+	respOK(c, nil)
 }
 
 func modifySpeech(c *gin.Context) {
@@ -253,7 +253,7 @@ func modifySpeech(c *gin.Context) {
 	}
 
 	e.Config.Speech = speech
-	respOK(c)
+	respOK(c, nil)
 }
 
 func modifyVoice(c *gin.Context) {
@@ -288,7 +288,7 @@ func modifyVoice(c *gin.Context) {
 	}
 
 	e.Config.Voice = voice
-	respOK(c)
+	respOK(c, nil)
 }
 
 //修改cfg/listen目录下文件
@@ -325,7 +325,7 @@ func modifyBiliBili(c *gin.Context) {
 	}
 
 	e.Config.Listen.BiliBili = biliBili
-	respOK(c)
+	respOK(c, nil)
 }
 
 //修改cfg/tool目录下的文件
@@ -362,7 +362,7 @@ func modifyMemory(c *gin.Context) {
 	}
 
 	e.Config.Tool.Memory = memory
-	respOK(c)
+	respOK(c, nil)
 }
 
 //修改cfg/app下的文件
@@ -399,7 +399,7 @@ func modifyAzure(c *gin.Context) {
 	}
 
 	e.Config.Application.Azure = azure
-	respOK(c)
+	respOK(c, nil)
 }
 
 func modifyBaidu(c *gin.Context) {
@@ -434,7 +434,7 @@ func modifyBaidu(c *gin.Context) {
 	}
 
 	e.Config.Application.BaiDu = baidu
-	respOK(c)
+	respOK(c, nil)
 }
 
 func modifyOpenai(c *gin.Context) {
@@ -469,7 +469,7 @@ func modifyOpenai(c *gin.Context) {
 	}
 
 	e.Config.Application.Openai = openai
-	respOK(c)
+	respOK(c, nil)
 }
 
 func modifyPinecone(c *gin.Context) {
@@ -504,7 +504,7 @@ func modifyPinecone(c *gin.Context) {
 	}
 
 	e.Config.Application.Pinecone = pinecone
-	respOK(c)
+	respOK(c, nil)
 }
 
 func modifyXfyun(c *gin.Context) {
@@ -539,5 +539,5 @@ func modifyXfyun(c *gin.Context) {
 	}
 
 	e.Config.Application.XunFei = xfyun
-	respOK(c)
+	respOK(c, nil)
 }

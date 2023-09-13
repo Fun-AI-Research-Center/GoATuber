@@ -63,6 +63,13 @@ func initControlRouter() {
 	{
 		command.GET("/read", readText)
 		command.GET("/chat", chat)
+		song := command.Group("/song") //唱歌相关
+		{
+			song.GET("/list", getSongList)
+			song.POST("/upload", uploadSong)
+			song.DELETE("/delete", deleteSong)
+			song.GET("/sing", sing)
+		}
 	}
 
 	//启动进程

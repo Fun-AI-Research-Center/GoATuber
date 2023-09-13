@@ -73,7 +73,12 @@ type PriorityMessage struct {
 	Message     string  //消息
 	Username    string  //消息发送者名称
 	UUID        string  //消息发送者识别号
+
+	//歌曲音频信息。byte需要转string使用。
+	Voice      string //人声音频
+	Instrument string //伴奏音频
 }
+
 type priorityQueueHeap []PriorityMessage
 
 type priorityQueue struct {
@@ -113,6 +118,7 @@ const (
 	DirectReadNeedMood
 	DirectReadWithoutMood
 	AdministratorChatMessage
+	SongMessage
 )
 
 const (

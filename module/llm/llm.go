@@ -12,6 +12,7 @@ import (
 	"GoATuber-2.0/app/openai"
 	"GoATuber-2.0/engine"
 	"GoATuber-2.0/err"
+	"GoATuber-2.0/module/voice"
 )
 
 func InitLLM(e *engine.Engine) {
@@ -51,7 +52,7 @@ func getMessage(e *engine.Engine) {
 func handelMessage(e *engine.Engine, message engine.PriorityMessage) {
 	//分流（是否需要经过llm）
 	switch message.MessageType {
-	case engine.DirectReadNeedMood, engine.DirectReadWithoutMood:
+	case engine.DirectReadNeedMood, engine.DirectReadWithoutMood, engine.SongMessage:
 		handelDiversionMessage(e, message)
 		return
 	}
@@ -165,5 +166,7 @@ func handelDiversionMessage(e *engine.Engine, message engine.PriorityMessage) {
 		e.Ch.LLMToEmotion <- struct{}{}
 	case engine.DirectReadWithoutMood:
 		e.Ch.EmotionToVoice <- struct{}{}
+	case engine.SongMessage:
+		voice.HandelSongVoice(e, message)
 	}
 }

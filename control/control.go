@@ -44,7 +44,7 @@ func run(c *gin.Context) {
 	cmd.Start()
 
 	//回复前端
-	respOK(c)
+	respOK(c, nil)
 }
 
 func stop(c *gin.Context) {
