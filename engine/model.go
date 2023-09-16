@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"GoATuber-2.0/config"
+	"github.com/gin-gonic/gin"
 )
 
 //结构体模型
@@ -16,6 +17,7 @@ type Engine struct {
 	Tool          tool           //工具包
 	Ch            ch             //信息通道
 	PriorityQueue *priorityQueue //优先队列
+	R             *gin.Engine    //gin框架引擎
 }
 
 type message struct {

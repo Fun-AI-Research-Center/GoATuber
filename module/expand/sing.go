@@ -15,6 +15,7 @@ import (
 //以后要实现自动化的推理似乎也不是不行。
 //那么音频文件需要格式化命名才行。
 //统一存储在根目录下的songs目录里。
+//TODO:整个语音传输模式都需要进行更改。
 
 var (
 	songList = make(map[string]string) //歌曲列表。歌曲以字典映射形式存储在本地的songs/songs.txt中。格式为歌曲名-编号。

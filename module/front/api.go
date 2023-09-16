@@ -13,7 +13,7 @@ var e *engine.Engine
 
 func InitAPI(engine *engine.Engine) {
 	e = engine
-	r := gin.Default()
+	r := e.R
 	r.GET("/ws", ws)
 	r.Use(static.Serve("/", static.LocalFile("dist", true)))
 	r.NoRoute(func(c *gin.Context) {
@@ -34,5 +34,4 @@ func InitAPI(engine *engine.Engine) {
 	})
 	r.GET("/get", getModelInfo)
 	r.POST("/speech", getSpeech)
-	r.Run(":9000") //服务在本地9000端口运行
 }
