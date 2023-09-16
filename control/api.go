@@ -12,9 +12,10 @@ import (
 
 func initControlRouter() {
 	r := gin.Default()
+	e.R = r
 
 	//加载静态控制器页面
-	r.Use(static.Serve("/", static.LocalFile("./control/frontend", true)))
+	r.Use(static.Serve("/control", static.LocalFile("./control/frontend", true)))
 	r.NoRoute(func(c *gin.Context) {
 		accept := c.Request.Header.Get("Accept")
 		flag := strings.Contains(accept, "text/html")
@@ -71,9 +72,9 @@ func initControlRouter() {
 	r.GET("/stop", stop)
 
 	//调用浏览器打开前端页面
-	cmd := exec.Command("cmd", "/c", "start", "http://127.0.0.1:8900")
+	cmd := exec.Command("cmd", "/c", "start", "http://127.0.0.1:9000/control")
 	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	cmd.Start()
 
-	r.Run(":8900")
+	r.Run(":9000")
 }
