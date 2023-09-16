@@ -34,11 +34,15 @@ func GetAuthentication(e *engine.Engine) {
 		resp, er := client.Do(req)
 		if er != nil {
 			err.Error(errors.New("发送请求错误（azure-tts模块）:"+er.Error()), err.Normal)
+			ticker = time.NewTimer(0 * time.Minute)
+			continue
 		}
 
 		bodyBytes, er := io.ReadAll(resp.Body)
 		if er != nil {
 			err.Error(errors.New("读取响应错误（azure-tts-authorization模块）:"+er.Error()), err.Normal)
+			ticker = time.NewTimer(0 * time.Minute)
+			continue
 		}
 		accessToken := string(bodyBytes)
 		authentication := "Bearer " + accessToken
