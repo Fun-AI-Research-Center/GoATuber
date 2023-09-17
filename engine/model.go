@@ -4,6 +4,7 @@ import (
 	"sync"
 
 	"GoATuber-2.0/config"
+	"GoATuber-2.0/tool/split"
 	"github.com/gin-gonic/gin"
 )
 
@@ -33,6 +34,9 @@ type MessageSlice struct {
 	Content string  //消息内容
 	Emotion emotion //情感
 	Voice   string  //语音
+
+	//唱歌
+	Song split.Pieces
 }
 
 type voice struct {
@@ -77,8 +81,9 @@ type PriorityMessage struct {
 	UUID        string  //消息发送者识别号
 
 	//歌曲音频信息。byte需要转string使用。
-	Voice      string //人声音频
-	Instrument string //伴奏音频
+	SongName   string       //歌曲文件名称
+	Voice      split.Pieces //人声音频
+	Instrument split.Pieces //伴奏音频
 }
 
 type priorityQueueHeap []PriorityMessage

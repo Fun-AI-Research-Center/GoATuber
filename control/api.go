@@ -54,6 +54,7 @@ func initControlRouter() {
 				song.POST("/upload", uploadSong)
 				song.DELETE("/delete", deleteSong)
 				song.GET("/sing", sing)
+				song.GET("/piece", getSongPiece)
 			}
 		}
 

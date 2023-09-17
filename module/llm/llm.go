@@ -167,6 +167,7 @@ func handelDiversionMessage(e *engine.Engine, message engine.PriorityMessage) {
 	case engine.DirectReadWithoutMood:
 		e.Ch.EmotionToVoice <- struct{}{}
 	case engine.SongMessage:
+		e.Message.MessageType = engine.SongMessage
 		voice.HandelSongVoice(e, message)
 	}
 }

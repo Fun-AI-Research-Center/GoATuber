@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"GoATuber-2.0/module/expand"
+	"GoATuber-2.0/tool/split"
 	"github.com/gin-gonic/gin"
 )
 
@@ -82,4 +83,30 @@ func sing(c *gin.Context) {
 	}
 
 	respOK(c, nil)
+}
+
+func getSongPiece(c *gin.Context) {
+	songName := c.PostForm("songName")
+
+	requireType := c.GetHeader("Type")
+	fileRange := c.GetHeader("Range")
+
+	var (
+		piece []byte
+		er    error
+	)
+	switch requireType {
+	case "voice":
+		piece, er = split.GetFilePiece("./songs/voice", songName+".wav", fileRange)
+
+	case "instrument":
+		piece, er = split.GetFilePiece("./songs/instrument", songName+".wav", fileRange)
+
+	}
+	if er != nil {
+		respErr(c, "err", er)
+		return
+	}
+
+	respOK(c, piece)
 }

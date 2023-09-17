@@ -2,13 +2,13 @@ package expand
 
 import (
 	"bufio"
-	"encoding/base64"
 	"os"
 	"strconv"
 	"strings"
 	"sync"
 
 	"GoATuber-2.0/engine"
+	"GoATuber-2.0/tool/split"
 )
 
 //唱歌 本项目目前不执行训练任务。唱歌需要自行进行训练与推理。
@@ -16,6 +16,8 @@ import (
 //那么音频文件需要格式化命名才行。
 //统一存储在根目录下的songs目录里。
 //TODO:整个语音传输模式都需要进行更改。
+
+const pieceSize = 1024 * 1024
 
 var (
 	songList = make(map[string]string) //歌曲列表。歌曲以字典映射形式存储在本地的songs/songs.txt中。格式为歌曲名-编号。
@@ -74,9 +76,19 @@ func UploadSong(voice, instrument []byte, songName string) error {
 		return er
 	}
 	_, er = file.WriteString(songName + "-" + strconv.Itoa(songNum) + "\n")
+	if er != nil {
+		return er
+	}
 
 	//释放互斥锁
 	songMu.Unlock()
+	//分片
+	er = split.GetPieceData("songs/voice", strconv.Itoa(songNum)+".wav", pieceSize) //分片
+	if er != nil {
+		return er
+	}
+	er = split.GetPieceData("songs/instrument", strconv.Itoa(songNum)+".wav", pieceSize) //分片
+
 	return er
 }
 
@@ -103,31 +115,38 @@ func DeleteSong(songName string) error {
 }
 
 // Sing 加载歌曲音频文件，传递给前端进行播放
-func Sing(e *engine.Engine, singName string) error {
+func Sing(e *engine.Engine, songName string) error {
 	//获取歌曲编号
-	songNum := songList[singName]
-	//读取歌曲文件
-	voiceFilePath := "songs/voice/" + songNum + ".wav"
-	voice, er := os.ReadFile(voiceFilePath)
-	if er != nil {
-		return er
-	}
-	//读取伴奏文件
-	instrumentFilePath := "songs/instrument/" + songNum + ".wav"
-	instrument, er := os.ReadFile(instrumentFilePath)
+	songNum := songList[songName]
+
+	voicePieces, instrumentPieces, er := getPieceData(songNum)
 	if er != nil {
 		return er
 	}
 
 	var message engine.PriorityMessage
 	message.MessageType = engine.SongMessage
-	message.Voice = base64.StdEncoding.EncodeToString(voice)
-	message.Instrument = base64.StdEncoding.EncodeToString(instrument)
+	message.Voice = voicePieces
+	message.Instrument = instrumentPieces
 	message.UUID = "42"
 	message.Username = "Administrator"
 	message.Priority = engine.MaxPriority //设置优先级为最大值
+	message.SongName = songName
 
 	//将message加入优先队列
 	e.Ch.ExpendToQueue <- message
 	return nil
+}
+
+func getPieceData(songName string) (voicePieces, instrumentPieces split.Pieces, er error) {
+	//获取歌曲分片信息
+	voicePieces, er = split.GetPieceInfo("songs/voice", songName+".wav")
+	if er != nil {
+		return
+	}
+	instrumentPieces, er = split.GetPieceInfo("songs/instrument", songName+".wav")
+	if er != nil {
+		return
+	}
+	return
 }

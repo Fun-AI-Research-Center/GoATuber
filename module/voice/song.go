@@ -13,9 +13,11 @@ func HandelSongVoice(e *engine.Engine, m engine.PriorityMessage) {
 	)
 
 	voice.Index = 0
-	voice.Voice = m.Voice
+	voice.Song = m.Voice
+	voice.Content = m.SongName //第一条消息的内容是歌曲名字
+
 	instrument.Index = 1
-	instrument.Voice = m.Instrument
+	instrument.Song = m.Instrument
 
 	e.Message.MessageSlice = append(e.Message.MessageSlice, voice)
 	e.Message.MessageSlice = append(e.Message.MessageSlice, instrument)

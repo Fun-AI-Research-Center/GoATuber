@@ -2,6 +2,7 @@ package front
 
 import (
 	"GoATuber-2.0/engine"
+	"GoATuber-2.0/tool/split"
 	jsoniter "github.com/json-iterator/go"
 )
 
@@ -10,6 +11,9 @@ type outMessage struct {
 	Sum         int       `json:"sum"`          //消息总数
 	Messages    []message `json:"messages"`
 	VType       int       `json:"VType"` //voice格式type，1表示http，2表示base64编码,3为二进制（编码成base64）
+
+	//唱歌
+	Song song `json:"song"` //唱歌数据
 }
 
 type message struct {
@@ -18,7 +22,14 @@ type message struct {
 	Act        string `json:"act"`        //live2d动作数组名称
 	Movement   string `json:"movement"`   //动作，全身的
 	Expression string `json:"expression"` //表情，脸部的
-	VType      int    `json:"VType"`      //voice格式type，1表示http，2表示base64编码,3为二进制（编码成base64）
+	VType      int    `json:"VType"`      //voice格式type，1表示http，2表示base64编码,3为二进制（编码成base64）,4是唱歌。
+}
+
+// 唱歌结构
+type song struct {
+	Name       string       `json:"name"`
+	Voice      split.Pieces `json:"voice"`
+	Instrument split.Pieces `json:"instrument"`
 }
 
 // 将消息格式化为传送给前端的格式
@@ -27,6 +38,9 @@ func formatMessage() outMessage {
 		MessageType: e.Message.MessageType,
 		Sum:         len(e.Message.MessageSlice),
 		Messages:    formatMessageSlice(e.Voice.VType),
+	}
+	if e.Message.MessageType == engine.SongMessage {
+		out.Song = formatSong()
 	}
 	return out
 }
@@ -45,6 +59,15 @@ func formatMessageSlice(vType int) []message {
 		})
 	}
 	return out
+}
+
+// 格式化歌曲信息
+func formatSong() song {
+	var song song
+	song.Voice = e.Message.MessageSlice[0].Song
+	song.Instrument = e.Message.MessageSlice[1].Song
+	song.Name = e.Message.MessageSlice[0].Content
+	return song
 }
 
 func handelFailSpeechMessage() []byte {
