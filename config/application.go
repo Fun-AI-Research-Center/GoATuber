@@ -126,7 +126,7 @@ type xunFeiTTS struct {
 		Pitch  int    `json:"pitch" mapstructure:"Pitch"`   //音高
 		Reg    string `json:"reg" mapstructure:"Reg"`       //英文发音方式
 		Rdn    string `json:"rdn" mapstructure:"Rdn"`       //数字发音方式
-	}
+	} `json:"xun_fei_voice"` //讯飞语音
 }
 
 // 初始化讯飞配置
