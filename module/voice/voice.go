@@ -4,6 +4,7 @@ import (
 	"errors"
 	"sync"
 
+	"GoATuber-2.0/app/XFyun"
 	"GoATuber-2.0/app/azure"
 	"GoATuber-2.0/engine"
 	"GoATuber-2.0/err"
@@ -29,6 +30,8 @@ func InitVoice(e *engine.Engine) {
 		e.Voice.VType = base64
 		go azure.GetAuthentication(e)
 		azure.GetTTSUrl(e)
+	} else if e.Config.Voice.XFyun {
+		e.Voice.VType = base64
 	}
 }
 
@@ -64,7 +67,7 @@ func handelVoice(e *engine.Engine, message *engine.MessageSlice, wg *sync.WaitGr
 	config := e.Config.Voice
 	var er error
 	if config.XFyun {
-
+		er = XFyun.GetVoice(e, message)
 	} else if config.Azure {
 		er = azure.GetVoice(e, message)
 	} else {
