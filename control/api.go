@@ -15,7 +15,7 @@ func initControlRouter() {
 	{
 		//加载静态控制器页面
 		control.StaticFile("/", "./dist/control.html")
-		r.Static("/assets", "./dist/assets")
+		r.Static("/controlAssets", "./dist/controlAssets")
 
 		//获取配置文件信息
 		control.GET("/init", getConfig)
