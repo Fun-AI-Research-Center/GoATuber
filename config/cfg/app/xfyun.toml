@@ -21,7 +21,7 @@ ApiSecret = "your_api_secret_here"
 AppID = "your_app_id_here"
 
 [XunFeiTTS.XunFeiVoice]
-Aue = "your_aue_here"
+Aue = "lame"
 Sfl = 1
 Auf = "your_auf_here"
 Vcn = "your_vcn_here"
