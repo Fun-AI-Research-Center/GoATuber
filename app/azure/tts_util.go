@@ -30,25 +30,30 @@ func GetAuthentication(e *engine.Engine) {
 	defer ticker.Stop()
 
 	for {
-		<-ticker.C
-		resp, er := client.Do(req)
-		if er != nil {
-			err.Error(errors.New("发送请求错误（azure-tts模块）:"+er.Error()), err.Normal)
-			ticker = time.NewTimer(0 * time.Minute)
-			continue
-		}
+		select {
+		case <-ticker.C:
+			<-ticker.C
+			resp, er := client.Do(req)
+			if er != nil {
+				err.Error(errors.New("发送请求错误（azure-tts模块）:"+er.Error()), err.Normal)
+				ticker = time.NewTimer(0 * time.Minute)
+				continue
+			}
 
-		bodyBytes, er := io.ReadAll(resp.Body)
-		if er != nil {
-			err.Error(errors.New("读取响应错误（azure-tts-authorization模块）:"+er.Error()), err.Normal)
-			ticker = time.NewTimer(0 * time.Minute)
-			continue
+			bodyBytes, er := io.ReadAll(resp.Body)
+			if er != nil {
+				err.Error(errors.New("读取响应错误（azure-tts-authorization模块）:"+er.Error()), err.Normal)
+				ticker = time.NewTimer(0 * time.Minute)
+				continue
+			}
+			accessToken := string(bodyBytes)
+			authentication := "Bearer " + accessToken
+			e.Config.Application.Azure.AzureTTS.Authentication = authentication
+			resp.Body.Close()
+			ticker = time.NewTimer(9 * time.Minute)
+		case <-e.Context.Context.Done():
+			return
 		}
-		accessToken := string(bodyBytes)
-		authentication := "Bearer " + accessToken
-		e.Config.Application.Azure.AzureTTS.Authentication = authentication
-		resp.Body.Close()
-		ticker = time.NewTimer(9 * time.Minute)
 	}
 }
 

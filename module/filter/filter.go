@@ -24,6 +24,8 @@ func filter(e *engine.Engine) {
 		select {
 		case chat := <-e.Ch.ChatToFilter:
 			go handelChat(chat.(listen.ChatStruct), e)
+		case <-e.Context.Context.Done():
+			return
 		}
 	}
 }

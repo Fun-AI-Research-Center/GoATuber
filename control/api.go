@@ -41,6 +41,9 @@ func initControlRouter() {
 			config.POST("/openai", modifyOpenai) //TODO:openai需要再加上对gpt_role的设置接口
 			config.POST("/pinecone", modifyPinecone)
 			config.POST("/xunfei", modifyXfyun)
+
+			//检查是否需要热重载
+			config.Use(checkReset)
 		}
 
 		//命令相关接口
@@ -49,6 +52,9 @@ func initControlRouter() {
 			command.GET("/read", readText)
 			command.GET("/chat", chat)
 		}
+
+		//websocket接口
+		control.GET("/ws")
 
 		//启动进程
 		control.GET("/run", run)

@@ -53,14 +53,21 @@ func getErnieAccessToken(e *engine.Engine) {
 		if !isInitGetToken {
 			changeIsInitGetToken <- true
 		}
-		ernieClock(e)
+		if canContinue := ernieClock(e); !canContinue {
+			return
+		}
 	}
 }
 
 // 计时器，access token过期之前一个小时自动重申请access token
-func ernieClock(e *engine.Engine) {
+func ernieClock(e *engine.Engine) bool {
 	timer := time.After(time.Duration(e.Config.Application.BaiDu.BaiduFilter.ExpiresIn-3600) * time.Second)
-	<-timer
+	select {
+	case <-timer:
+		return true
+	case <-e.Context.Context.Done():
+		return false
+	}
 }
 
 // 当token达到设置的上限的时候，清理记忆释放token

@@ -29,64 +29,69 @@ func newMonitor(c *engine.Engine) *Monitor {
 	return m
 }
 
-func work(chat *ChatServer, group *sync.WaitGroup, e *engine.Engine) {
+func work(chat *ChatServer, e *engine.Engine, m *Monitor) {
 	out := make(chan Message, ChanBufSize*2) //两倍缓冲
 	go chat.ReceiveMsg(out)
 	for {
-		msg, ok := <-out
-		if !ok {
-			group.Done()
+		select {
+		case <-e.Context.Context.Done():
 			return
-		}
-		switch m := msg.(type) {
-		case *DanMuMessage:
-			chat := listen.ChatStruct{
-				Type:      engine.NormalChat,
-				TimeStamp: m.Timestamp,
-				ChatName:  m.Uname,
-				Price:     0,
-				Message:   m.Text,
-				Uid:       strconv.FormatInt(m.Uid, 10),
-				IsValid:   true,
+		case msg, ok := <-out:
+			if !ok {
+				m.group.Done()
+				m.Stop()
+				return
 			}
-			go chat.ChatOut(e)
-		case *SuperChatMessage:
-			chat := listen.ChatStruct{
-				Type:      engine.SuperChat,
-				TimeStamp: m.Timestamp,
-				ChatName:  m.Uname,
-				Price:     m.Price,
-				Message:   m.Text,
-				Uid:       strconv.FormatInt(m.Uid, 10),
-				IsValid:   true,
+			switch m := msg.(type) {
+			case *DanMuMessage:
+				chat := listen.ChatStruct{
+					Type:      engine.NormalChat,
+					TimeStamp: m.Timestamp,
+					ChatName:  m.Uname,
+					Price:     0,
+					Message:   m.Text,
+					Uid:       strconv.FormatInt(m.Uid, 10),
+					IsValid:   true,
+				}
+				go chat.ChatOut(e)
+			case *SuperChatMessage:
+				chat := listen.ChatStruct{
+					Type:      engine.SuperChat,
+					TimeStamp: m.Timestamp,
+					ChatName:  m.Uname,
+					Price:     m.Price,
+					Message:   m.Text,
+					Uid:       strconv.FormatInt(m.Uid, 10),
+					IsValid:   true,
+				}
+				go chat.ChatOut(e)
+			case *GiftMessage:
+				chat := listen.ChatStruct{
+					Type:      engine.GiftChat,
+					TimeStamp: m.Timestamp,
+					ChatName:  m.Uname,
+					Price:     m.Price,
+					Message:   "",
+					Uid:       strconv.FormatInt(m.Uid, 10),
+					IsValid:   true,
+				}
+				go chat.ChatOut(e)
+			case *GuardMessage:
+				chat := listen.ChatStruct{
+					Type:      engine.Subscription,
+					TimeStamp: m.Timestamp,
+					ChatName:  m.Uname,
+					Price:     m.Price,
+					Message:   "",
+					Uid:       strconv.FormatInt(m.Uid, 10),
+					IsValid:   true,
+				}
+				go chat.ChatOut(e)
+				//case *EntryMessage:
+				//	ifInsertError(d.insertEntryMsg(*r, m))
+				//case *RoomFansMessage:
+				//	ifInsertError(d.insertFansMsg(*r, m))
 			}
-			go chat.ChatOut(e)
-		case *GiftMessage:
-			chat := listen.ChatStruct{
-				Type:      engine.GiftChat,
-				TimeStamp: m.Timestamp,
-				ChatName:  m.Uname,
-				Price:     m.Price,
-				Message:   "",
-				Uid:       strconv.FormatInt(m.Uid, 10),
-				IsValid:   true,
-			}
-			go chat.ChatOut(e)
-		case *GuardMessage:
-			chat := listen.ChatStruct{
-				Type:      engine.Subscription,
-				TimeStamp: m.Timestamp,
-				ChatName:  m.Uname,
-				Price:     m.Price,
-				Message:   "",
-				Uid:       strconv.FormatInt(m.Uid, 10),
-				IsValid:   true,
-			}
-			go chat.ChatOut(e)
-			//case *EntryMessage:
-			//	ifInsertError(d.insertEntryMsg(*r, m))
-			//case *RoomFansMessage:
-			//	ifInsertError(d.insertFansMsg(*r, m))
 		}
 	}
 }
@@ -103,7 +108,7 @@ func (m *Monitor) start(engine *engine.Engine) {
 			break
 		}
 		m.group.Add(1)
-		go work(c, &(m.group), engine)
+		go work(c, engine, m)
 		time.Sleep(time.Second)
 	}
 }

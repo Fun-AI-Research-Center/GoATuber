@@ -46,6 +46,8 @@ func FilterAI(e *engine.Engine) {
 		case <-e.Ch.AIFilter:
 			isValid, _ := filter.Trie.validate(e.Message.Message)
 			e.Ch.FinishFilter <- isValid
+		case <-e.Context.Context.Done():
+			return
 		}
 	}
 }

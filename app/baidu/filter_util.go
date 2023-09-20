@@ -55,6 +55,10 @@ func GetFilterAccessToken(e *engine.Engine) {
 // 计时器，access token过期之前一个小时自动重申请access token
 func filterClock(e *engine.Engine) {
 	timer := time.After(time.Duration(e.Config.Application.BaiDu.BaiduFilter.ExpiresIn-3600) * time.Second)
-	<-timer
-	go GetFilterAccessToken(e)
+	select {
+	case <-timer:
+		go GetFilterAccessToken(e)
+	case <-e.Context.Context.Done():
+		return
+	}
 }

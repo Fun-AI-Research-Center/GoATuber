@@ -25,7 +25,7 @@ var (
 
 func InitVoice(e *engine.Engine) {
 	go listenVoice(e)
-	go handelError()
+	go handelError(e)
 	if e.Config.Voice.Azure {
 		e.Voice.VType = base64
 		go azure.GetAuthentication(e)
@@ -59,6 +59,8 @@ func listenVoice(e *engine.Engine) {
 
 			//将消息发送到前端
 			e.Ch.ToFront <- struct{}{}
+		case <-e.Context.Context.Done():
+			return
 		}
 	}
 }
@@ -91,7 +93,7 @@ func handelVoice(e *engine.Engine, message *engine.MessageSlice, wg *sync.WaitGr
 }
 
 // 处理错误
-func handelError() {
+func handelError(e *engine.Engine) {
 	var isErr = false
 	for {
 		select {
@@ -100,6 +102,8 @@ func handelError() {
 		case <-getErrorInfo:
 			postErrorInfo <- isErr
 			isErr = false
+		case <-e.Context.Context.Done():
+			return
 		}
 	}
 }

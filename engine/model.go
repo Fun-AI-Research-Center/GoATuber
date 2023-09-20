@@ -1,6 +1,7 @@
 package engine
 
 import (
+	c "context"
 	"sync"
 
 	"GoATuber-2.0/config"
@@ -18,6 +19,7 @@ type Engine struct {
 	Ch            ch             //信息通道
 	PriorityQueue *priorityQueue //优先队列
 	R             *gin.Engine    //gin框架引擎
+	Context       context        //上下文
 }
 
 type message struct {
@@ -66,6 +68,12 @@ type ch struct {
 
 	//拓展槽
 	ExpendToQueue chan PriorityMessage //拓展擦传递给优先队列
+}
+
+// Context 上下文
+type context struct {
+	Context c.Context
+	Cancel  c.CancelFunc
 }
 
 // PriorityMessage 优先队列

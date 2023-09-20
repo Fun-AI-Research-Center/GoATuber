@@ -1,6 +1,8 @@
 package engine
 
 import (
+	c "context"
+
 	"GoATuber-2.0/config"
 )
 
@@ -16,6 +18,12 @@ func NewEngine() *Engine {
 	engine.initTransport()
 
 	engine.Config = config.GetConfig() //配置文件导入引擎
+
+	//初始化上下文以控制goroutine
+	context, cancel := c.WithCancel(c.Background())
+	engine.Context.Context = context
+	engine.Context.Cancel = cancel
+
 	return engine
 }
 

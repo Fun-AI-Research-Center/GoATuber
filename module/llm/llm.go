@@ -42,7 +42,12 @@ func getMessage(e *engine.Engine) {
 		handelMessage(e, message)
 
 		//等待下一轮
-		<-e.Ch.StartNext
+		select {
+		case <-e.Ch.StartNext:
+			continue
+		case <-e.Context.Context.Done():
+			return
+		}
 	}
 }
 
@@ -99,10 +104,12 @@ func processingMessage(e *engine.Engine) {
 			e.Ch.AIFilter <- struct{}{}
 			isValid := <-e.Ch.FinishFilter
 			if !isValid {
-				e.Message.Message = "filter!"
+				e.Message.Message = "filter!" //TODO:替换为自定义的过滤词，或者直接开始下一轮生成
 			}
 			splitSentence(e)
 			e.Ch.LLMToEmotion <- struct{}{}
+		case <-e.Context.Context.Done():
+			return
 		}
 	}
 }

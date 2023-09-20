@@ -24,6 +24,8 @@ func listen(e *engine.Engine) {
 
 			//情感分析完成，信息送往语音合成模块
 			e.Ch.EmotionToVoice <- struct{}{}
+		case <-e.Context.Context.Done():
+			return
 		}
 	}
 }

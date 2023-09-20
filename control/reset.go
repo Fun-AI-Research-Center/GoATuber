@@ -1,14 +1,8 @@
 package control
 
 import (
-	"os"
-	"os/exec"
-	"syscall"
-
-	"GoATuber-2.0/engine"
 	"GoATuber-2.0/module/emotion"
 	"GoATuber-2.0/module/filter"
-	"GoATuber-2.0/module/front"
 	"GoATuber-2.0/module/llm"
 	"GoATuber-2.0/module/monitor"
 	"GoATuber-2.0/module/speech"
@@ -17,16 +11,28 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// 配置文件热改动
+
+// 主程序是否已经启动
 var (
-	e *engine.Engine
+	isProgramRunning = false
+	nextChange       = make(chan struct{})
 )
 
-func InitControl() {
-	e = engine.NewEngine()
-	initControlRouter()
+// 中间件，检查是否需要进行热重载
+func checkReset(c *gin.Context) {
+	c.Next() //先执行后面的函数
+	if isProgramRunning {
+		<-nextChange
+		reset()
+	}
 }
 
-func run(c *gin.Context) {
+func reset() {
+	//关闭所有(除了前后端对接)监听式goroutine,以防重启时出现双开
+	e.Context.Cancel()
+
+	//热重载(正确的,就是把run的命令复制了一下,非常粗暴全局重载)
 	llm.InitLLM(e)               //先初始化获取模块
 	tool.Init(e)                 //再初始化工具模块
 	emotion.InitListenEmotion(e) //再初始化情感模块
@@ -35,20 +41,4 @@ func run(c *gin.Context) {
 	go monitor.InitMonitor(e)    //再初始化监听模块
 
 	go speech.InitSpeech(e) //再初始化语音识别模块
-
-	go front.InitAPI(e) //初始化前端对接
-
-	//调用浏览器打开展示页面
-	cmd := exec.Command("cmd", "/c", "start", "http://127.0.0.1:9000")
-	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
-	cmd.Start()
-
-	isProgramRunning = true
-
-	//回复前端
-	respOK(c)
-}
-
-func stop(c *gin.Context) {
-	os.Exit(0)
 }

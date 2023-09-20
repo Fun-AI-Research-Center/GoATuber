@@ -16,11 +16,15 @@ func InitSpeech(e *engine.Engine) {
 
 func listenSpeech(e *engine.Engine) {
 	for {
-		speech := <-e.Ch.GetSpeech
+		select {
+		case <-e.Context.Context.Done():
+			return
+		case speech := <-e.Ch.GetSpeech: //获取语音
 
-		speechData := bytes.NewBuffer(speech)
+			speechData := bytes.NewBuffer(speech)
 
-		speechToText(e, speechData)
+			speechToText(e, speechData)
+		}
 	}
 }
 
