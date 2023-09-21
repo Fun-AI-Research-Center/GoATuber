@@ -3,7 +3,6 @@ package azure
 import (
 	"errors"
 	"io"
-	"log"
 	"net/http"
 	"regexp"
 	"time"
@@ -32,7 +31,6 @@ func GetAuthentication(e *engine.Engine) {
 	for {
 		select {
 		case <-ticker.C:
-			<-ticker.C
 			resp, er := client.Do(req)
 			if er != nil {
 				err.Error(errors.New("发送请求错误（azure-tts模块）:"+er.Error()), err.Normal)
@@ -63,7 +61,7 @@ func GetTTSUrl(e *engine.Engine) {
 	re := regexp.MustCompile(`https:\/\/(\w+)\.`)
 	match := re.FindStringSubmatch(config.EndPoint)
 	if match == nil {
-		log.Fatalf("azure调取模块，config设置：endpoint获取错误")
+		err.Error(errors.New("azure调取模块，config设置：endpoint获取错误"), err.Normal)
 	} else {
 		e.Config.Application.Azure.AzureTTS.Url = match[0] + "tts.speech.microsoft.com/cognitiveservices/v1"
 	}
