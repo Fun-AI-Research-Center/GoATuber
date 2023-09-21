@@ -113,20 +113,20 @@ type xunFeiSpark struct {
 }
 
 type xunFeiTTS struct {
-	ApiKey      string `json:"api_key" mapstructure:"api_key"`       //API密钥
-	ApiSecret   string `json:"api_secret" mapstructure:"api_secret"` //API密钥
-	AppID       string `json:"app_id" mapstructure:"app_id"`         //API密钥
+	ApiKey      string `json:"api_key" mapstructure:"ApiKey"`       //API密钥
+	ApiSecret   string `json:"api_secret" mapstructure:"ApiSecret"` //API密钥
+	AppID       string `json:"app_id" mapstructure:"AppID"`         //API密钥
 	XunFeiVoice struct {
-		Aue    string `json:"aue" mapstructure:"aue"`       //音频编码
-		Sfl    int    `json:"sfl" mapstructure:"sfl"`       //流式返回
-		Auf    string `json:"auf" mapstructure:"auf"`       //音频采样率
-		Vcn    string `json:"vcn" mapstructure:"vcn"`       //发音人
-		Speed  int    `json:"speed" mapstructure:"speed"`   //语速
-		Volume int    `json:"volume" mapstructure:"volume"` //音量
-		Pitch  int    `json:"pitch" mapstructure:"pitch"`   //音高
-		Reg    string `json:"reg" mapstructure:"reg"`       //英文发音方式
-		Rdn    string `json:"rdn" mapstructure:"rdn"`       //数字发音方式
-	}
+		Aue    string `json:"aue" mapstructure:"Aue"`       //音频编码
+		Sfl    int    `json:"sfl" mapstructure:"Sfl"`       //流式返回
+		Auf    string `json:"auf" mapstructure:"Auf"`       //音频采样率
+		Vcn    string `json:"vcn" mapstructure:"Vcn"`       //发音人
+		Speed  int    `json:"speed" mapstructure:"Speed"`   //语速
+		Volume int    `json:"volume" mapstructure:"Volume"` //音量
+		Pitch  int    `json:"pitch" mapstructure:"Pitch"`   //音高
+		Reg    string `json:"reg" mapstructure:"Reg"`       //英文发音方式
+		Rdn    string `json:"rdn" mapstructure:"Rdn"`       //数字发音方式
+	} `json:"xun_fei_voice"` //讯飞语音
 }
 
 // 初始化讯飞配置

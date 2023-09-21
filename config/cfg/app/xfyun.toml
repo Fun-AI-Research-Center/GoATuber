@@ -1,5 +1,5 @@
 [XunFeiSpark]
-HostURL = "ws://spark-api.xf-yun.com/v2.1/chat"
+HostURL = "wss://spark-api.xf-yun.com/v2.1/chat"
 AppID = "YourAppID"
 ApiKey = "YourAPIKey"
 ApiSecret = "YourAPISecret"
@@ -16,17 +16,17 @@ CleanAll=true
 CleanOne=false
 
 [XunFeiTTS]
-api_key = "your_api_key_here"
-api_secret = "your_api_secret_here"
-app_id = "your_app_id_here"
+ApiKey = "your_api_key_here"
+ApiSecret = "your_api_secret_here"
+AppID = "your_app_id_here"
 
 [XunFeiTTS.XunFeiVoice]
-aue = "your_aue_here"
-sfl = 1
-auf = "your_auf_here"
-vcn = "your_vcn_here"
-speed = 50
-volume = 50
-pitch = 50
-reg = "your_reg_here"
-rdn = "your_rdn_here"
+Aue = "lame"
+Sfl = 1
+Auf = "your_auf_here"
+Vcn = "your_vcn_here"
+Speed = 50
+Volume = 50
+Pitch = 50
+Reg = "your_reg_here"
+Rdn = "your_rdn_here"
