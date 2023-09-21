@@ -47,7 +47,7 @@ func GetFilterAccessToken(e *engine.Engine) {
 			continue
 		}
 		if baiduFilterCfg.AccessToken == "" {
-			err.Error(errors.New("获取access token失败:"+er.Error()), err.Normal)
+			err.Error(errors.New("获取access token失败:"+string(body)), err.Normal)
 			continue
 		}
 
