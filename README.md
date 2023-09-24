@@ -1,7 +1,7 @@
 <div align="center">
   <h1>Go-AI-vtuber</h1>
     <div>
-    GoAtuber是一个基于golang、vue3、react和typescript的AI Vtber框架项目，通过简单的配置文件修改，即可打造出一个AI vtuber。
+    GoAtuber是一个基于golang、vue3、react和typescript的AI Vtber项目，通过简单的配置文件修改，即可打造出一个AI vtuber。
     </div>
 </div>
 
