@@ -52,7 +52,7 @@ func listenVoice(e *engine.Engine) {
 			if isErr {
 				e.Ch.StartNext <- struct{}{}
 				if e.Message.MessageType == engine.Speech {
-					e.Ch.SpeechFail <- struct{}{}
+					e.Ch.VoiceFail <- struct{}{}
 				}
 				continue
 			}

@@ -39,6 +39,6 @@ func initCH(engine *Engine) {
 	engine.Ch.StartNext = make(chan struct{}, 1)
 	engine.Ch.WsDone = make(chan struct{}, 1)
 	engine.Ch.GetSpeech = make(chan []byte, 1)
-	engine.Ch.SpeechFail = make(chan struct{}, 1)
+	engine.Ch.VoiceFail = make(chan struct{}, 1)
 	engine.Ch.ExpendToQueue = make(chan PriorityMessage, 1)
 }

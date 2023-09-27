@@ -42,7 +42,7 @@ func initControlRouter() {
 			config.POST("/pinecone", modifyPinecone)
 			config.POST("/xunfei", modifyXfyun)
 
-			//检查是否需要热重载
+			//检查是否需要热重载(作为中间件使用)
 			config.Use(checkReset)
 		}
 
@@ -54,7 +54,7 @@ func initControlRouter() {
 		}
 
 		//websocket接口
-		control.GET("/ws")
+		control.GET("/ws", ws)
 
 		//启动进程
 		control.GET("/run", run)

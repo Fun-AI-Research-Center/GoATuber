@@ -92,7 +92,7 @@ func chooseLLMModel(e *engine.Engine, message engine.PriorityMessage) {
 		err.Error(er, err.Normal)
 		e.Ch.StartNext <- struct{}{}
 		if e.Message.MessageType == engine.Speech {
-			e.Ch.SpeechFail <- struct{}{}
+			e.Ch.VoiceFail <- struct{}{}
 		}
 	}
 }

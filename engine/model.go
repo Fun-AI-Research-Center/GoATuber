@@ -63,11 +63,11 @@ type ch struct {
 	WsDone         chan struct{}    //websocket完成
 
 	//speech相关
-	GetSpeech  chan []byte   //收到来自前端的speech信息
-	SpeechFail chan struct{} //语音消息处理失败，通知前端解除阻塞
+	GetSpeech chan []byte   //收到来自前端的speech信息
+	VoiceFail chan struct{} //语音消息处理失败，通知前端解除阻塞
 
 	//拓展槽
-	ExpendToQueue chan PriorityMessage //拓展擦传递给优先队列
+	ExpendToQueue chan PriorityMessage //拓展槽传递给优先队列
 }
 
 // Context 上下文

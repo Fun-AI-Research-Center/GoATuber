@@ -5,6 +5,8 @@ import (
 	"os"
 	"sync"
 	"time"
+
+	"GoATuber-2.0/control"
 )
 
 //错误处理
@@ -33,6 +35,14 @@ func Error(err error, level int) {
 
 // handelNormalError 处理可忽略的错误
 func handelNormalError(e error) {
+	//recover激活的可能性，多半是前端ws断连了，导致管道关闭和阻塞
+	//这种情况肯定是不值得整个程序退出的
+	defer func() {
+		if err := recover(); err != nil {
+			return
+		}
+	}()
+
 	var err error
 	//如果错误日志不存在，则创建错误日志
 	if errorLog == nil {
@@ -65,6 +75,8 @@ func handelNormalError(e error) {
 	}
 
 	log.Println(e)
+
+	control.ErrToControl <- e.Error()
 }
 
 // handelFatalError 处理应当中断程序执行的错误

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"strconv"
 
 	"GoATuber-2.0/err"
 	"github.com/gin-gonic/gin"
@@ -31,7 +32,7 @@ func ws(c *gin.Context) {
 
 func write(conn *websocket.Conn) {
 	defer func() {
-		log.Println("连接断开")
+		log.Println("与展示页面断开连接")
 	}()
 
 	//向前端发送连接成功信息
@@ -55,7 +56,7 @@ func write(conn *websocket.Conn) {
 			if er != nil {
 				continue
 			}
-		case <-e.Ch.FilterToLLM:
+		case <-e.Ch.VoiceFail: //当语音合成失败的时候，做特殊处理。
 			er = conn.WriteMessage(websocket.TextMessage, handelFailSpeechMessage())
 			if er != nil {
 				continue
@@ -64,6 +65,11 @@ func write(conn *websocket.Conn) {
 			return
 		}
 	}
+}
+
+type receiveMessage struct {
+	Code int    `json:"code"` //消息码。0代表正确返回，其它皆为错误代码。
+	Info string `json:"info"`
 }
 
 func read(conn *websocket.Conn) {
@@ -76,11 +82,26 @@ func read(conn *websocket.Conn) {
 		e.Ch.WsDone <- struct{}{}
 	}()
 	for {
-		_, code, er := conn.ReadMessage()
+		_, msg, er := conn.ReadMessage()
 		if er != nil {
-			break
+			err.Error(er, err.Normal)
+			e.Ch.StartNext <- struct{}{} //出错了就直接开启下一轮
+			continue
 		}
-		switch string(code) {
+
+		var (
+			receiveMsg receiveMessage
+			json       = jsoniter.ConfigCompatibleWithStandardLibrary
+		)
+
+		er = json.Unmarshal(msg, &receiveMsg)
+		if er != nil {
+			err.Error(er, err.Normal)
+			e.Ch.StartNext <- struct{}{} //出错了就直接开启下一轮
+			continue
+		}
+
+		switch strconv.Itoa(receiveMsg.Code) {
 		case "0":
 			//清空消息
 			e.Message.Message = ""
@@ -90,7 +111,7 @@ func read(conn *websocket.Conn) {
 
 			e.Ch.StartNext <- struct{}{}
 		default:
-			err.Error(errors.New("前端返回错误代码："+string(code)), err.Normal)
+			err.Error(errors.New("前端返回错误代码："+strconv.Itoa(receiveMsg.Code)+",错误消息内容:"+receiveMsg.Info), err.Normal)
 			e.Ch.StartNext <- struct{}{} //出错了就直接开启下一轮
 		}
 	}
