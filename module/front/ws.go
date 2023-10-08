@@ -4,6 +4,7 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"time"
 
 	"GoATuber-2.0/err"
 	"github.com/gin-gonic/gin"
@@ -75,6 +76,27 @@ func read(conn *websocket.Conn) {
 		}
 		e.Ch.WsDone <- struct{}{}
 	}()
+
+	//心跳检测
+	go func() {
+		//设置ping时间
+		ticker := time.NewTicker(time.Minute * 1)
+		defer ticker.Stop()
+
+		//循环发送ping并读取pong
+		for {
+			select {
+			case <-ticker.C:
+				er := conn.WriteMessage(websocket.PingMessage, nil)
+				if er != nil {
+					err.Error(errors.New("websocket连接心跳失败:"+er.Error()), err.Normal)
+					return
+				}
+
+			}
+		}
+	}()
+
 	for {
 		_, code, er := conn.ReadMessage()
 		if er != nil {

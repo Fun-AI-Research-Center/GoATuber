@@ -3,7 +3,6 @@ package control
 import (
 	"os"
 	"os/exec"
-	"syscall"
 
 	"GoATuber-2.0/engine"
 	"GoATuber-2.0/module/emotion"
@@ -40,7 +39,6 @@ func run(c *gin.Context) {
 
 	//调用浏览器打开展示页面
 	cmd := exec.Command("cmd", "/c", "start", "http://127.0.0.1:9000")
-	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	cmd.Start()
 
 	//回复前端

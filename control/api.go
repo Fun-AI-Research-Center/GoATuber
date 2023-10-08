@@ -2,7 +2,6 @@ package control
 
 import (
 	"os/exec"
-	"syscall"
 
 	"github.com/gin-gonic/gin"
 )
@@ -58,7 +57,6 @@ func initControlRouter() {
 
 	//调用浏览器打开前端页面
 	cmd := exec.Command("cmd", "/c", "start", "http://127.0.0.1:9000/control")
-	cmd.SysProcAttr = &syscall.SysProcAttr{HideWindow: true}
 	cmd.Start()
 
 	r.Run(":9000")
