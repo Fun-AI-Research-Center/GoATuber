@@ -98,22 +98,27 @@ func read(conn *websocket.Conn) {
 	}()
 
 	for {
-		_, code, er := conn.ReadMessage()
+		messageType, code, er := conn.ReadMessage()
 		if er != nil {
 			break
 		}
-		switch string(code) {
-		case "0":
-			//清空消息
-			e.Message.Message = ""
-			e.Message.MessageSlice = nil
-			e.Message.Username = ""
-			e.Message.Uuid = ""
+		switch messageType {
+		case websocket.TextMessage:
+			switch string(code) {
+			case "0":
+				//清空消息
+				e.Message.Message = ""
+				e.Message.MessageSlice = nil
+				e.Message.Username = ""
+				e.Message.Uuid = ""
 
-			e.Ch.StartNext <- struct{}{}
-		default:
-			err.Error(errors.New("前端返回错误代码："+string(code)), err.Normal)
-			e.Ch.StartNext <- struct{}{} //出错了就直接开启下一轮
+				e.Ch.StartNext <- struct{}{}
+			default:
+				err.Error(errors.New("前端返回错误代码："+string(code)), err.Normal)
+				e.Ch.StartNext <- struct{}{} //出错了就直接开启下一轮
+			}
+		case websocket.PongMessage:
+			//TODO:处理pong消息
 		}
 	}
 }
