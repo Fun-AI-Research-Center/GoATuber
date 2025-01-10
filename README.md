@@ -1,3 +1,5 @@
+**本项目暂停维护。新的AI Vtuber项目将会基于[UBIK分布式工作流架构](https://github.com/lvyonghuan/ubik)（WIP）实现，作为UBIK分布式工作流框架的示例。完成时间不定。**
+
 <div align="center">
   <h1>Go-AI-vtuber</h1>
     <div>
